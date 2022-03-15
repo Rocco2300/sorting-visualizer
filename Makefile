@@ -18,3 +18,7 @@ $(TARGET): $(OBJS)
 
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) -I $(INC) -c $< -o $@
+
+clean:
+	del /f obj\\*.o
+	del /f a.exe
