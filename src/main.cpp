@@ -11,15 +11,16 @@ int main()
 
     std::vector<sf::RectangleShape> rects;
 
-    for(int i = 0; i < 10; i++)
+    int rectNo = 100;
+    for(int i = 0; i < rectNo; i++)
     {
-        float height = (WINDOW_HEIGHT - 20) * ((i+1) / 10.f);
-        sf::RectangleShape temp({WINDOW_WIDTH / 10, height});
+        float height = (WINDOW_HEIGHT - 20) * ((i+1) / (float)rectNo);
+        sf::RectangleShape temp({WINDOW_WIDTH / 20, height});
         temp.setFillColor(sf::Color::White);
         temp.setOutlineThickness(1);
         temp.setOutlineColor(sf::Color::Black);
-        temp.setOrigin({WINDOW_WIDTH / 20, height});
-        temp.setPosition({WINDOW_WIDTH / 10.f * i + WINDOW_WIDTH / 20.f, WINDOW_HEIGHT});
+        temp.setOrigin({WINDOW_WIDTH / (float)rectNo, height});
+        temp.setPosition({WINDOW_WIDTH / (float)rectNo * i + WINDOW_WIDTH / rectNo, WINDOW_HEIGHT});
         rects.push_back(temp);
     }
 
@@ -33,7 +34,7 @@ int main()
         }
 
         window.clear();
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < rectNo; i++)
         {
             window.draw(rects[i]);
         }
