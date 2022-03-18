@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <thread>
 
 struct Element
 {
@@ -10,9 +11,10 @@ struct Element
 
 class SortingAlgorithm
 {
-private:
+protected:
     std::vector<Element>* elems;
 public:
     SortingAlgorithm(std::vector<Element>& elems);
-    void sort();
+    virtual ~SortingAlgorithm() { }
+    virtual void sort() { }
 };

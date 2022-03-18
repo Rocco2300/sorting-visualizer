@@ -5,7 +5,7 @@
 #include <ctime>
 #include <algorithm>
 #include <thread>
-#include "SortingAlgorithm.h"
+#include "BubbleSort.h"
 
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 400;
@@ -27,7 +27,7 @@ int main()
         elems.push_back(el);
     }
 
-    SortingAlgorithm* sorting = new SortingAlgorithm(elems);
+    SortingAlgorithm* sorting = new BubbleSort(elems);
     std::random_shuffle(elems.begin(), elems.end());
     // bubbleSort(heights);
     std::thread th(&SortingAlgorithm::sort, sorting);
@@ -38,7 +38,10 @@ int main()
         while (window.pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
+            {
+                th.detach();
                 window.close();
+            }
         }
 
         window.clear();
