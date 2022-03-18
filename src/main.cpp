@@ -5,34 +5,10 @@
 #include <ctime>
 #include <algorithm>
 #include <thread>
+#include "SortingAlgorithm.h"
 
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 400;
-
-struct Element
-{
-    float height;
-    sf::Color color;
-};
-
-void bubbleSort(std::vector<Element>& vec)
-{
-    for(size_t i = 0; i < vec.size()-1; i++)
-    {
-        for(size_t j = 0; j < vec.size()-i-1; j++)
-        {
-            if(vec[j].height > vec[j+1].height)
-            {
-                vec[j].color = sf::Color::Red;
-                std::swap(vec[j], vec[j+1]);
-            }
-            else
-                vec[j].color = sf::Color::White;
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        }
-        vec[vec.size()-i-1].color = sf::Color::White;
-    }
-}
 
 int main()
 {
@@ -51,9 +27,10 @@ int main()
         elems.push_back(el);
     }
 
+    SortingAlgorithm* sorting = new SortingAlgorithm(elems);
     std::random_shuffle(elems.begin(), elems.end());
     // bubbleSort(heights);
-    std::thread th(bubbleSort, std::ref(elems));
+    std::thread th(&SortingAlgorithm::sort, sorting);
 
     while (window.isOpen())
     {
