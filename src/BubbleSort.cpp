@@ -4,7 +4,7 @@ BubbleSort::BubbleSort(std::vector<Element>& elems) : SortingAlgorithm(elems)
 {
 }
 
-void BubbleSort::sort()
+void BubbleSort::_sort()
 {
     for(size_t i = 0; i < elems->size()-1; i++)
     {

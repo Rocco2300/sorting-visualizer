@@ -6,6 +6,6 @@ class BubbleSort : public SortingAlgorithm
 {
 public:
     BubbleSort(std::vector<Element>& elems);
-    void sort() override;
+    void _sort() override;
 };
 

@@ -12,9 +12,13 @@ struct Element
 class SortingAlgorithm
 {
 protected:
+    bool finished;
     std::vector<Element>* elems;
 public:
     SortingAlgorithm(std::vector<Element>& elems);
     virtual ~SortingAlgorithm() { }
-    virtual void sort() { }
+    void sort();
+    bool isFinished();
+protected:
+    virtual void _sort() { }
 };

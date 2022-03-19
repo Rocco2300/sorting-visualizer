@@ -14,6 +14,7 @@ int main()
 {
     srand(time(NULL));
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!");
+    window.setFramerateLimit(60);
 
     std::vector<Element> elems;
 
@@ -30,7 +31,8 @@ int main()
     SortingAlgorithm* sorting = new BubbleSort(elems);
     std::random_shuffle(elems.begin(), elems.end());
     // bubbleSort(heights);
-    std::thread th(&SortingAlgorithm::sort, sorting);
+    std::thread thread(&SortingAlgorithm::sort, sorting);
+    // sorting->sort();
 
     while (window.isOpen())
     {
@@ -39,7 +41,6 @@ int main()
         {
             if (event.type == sf::Event::Closed)
             {
-                th.detach();
                 window.close();
             }
         }
@@ -54,7 +55,12 @@ int main()
             window.draw(temp);
         }
         window.display();
+
+        if(sorting->isFinished() && thread.joinable())
+        {
+            thread.join();
+            std::cout << "Done" << std::endl;
+        }
     }
-    th.join();
     return 0;
 }
