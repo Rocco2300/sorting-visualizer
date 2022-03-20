@@ -5,7 +5,7 @@
 #include <ctime>
 #include <algorithm>
 #include <thread>
-#include "BubbleSort.h"
+#include "QuickSort.h"
 
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 400;
@@ -18,7 +18,7 @@ int main()
 
     std::vector<Element> elems;
 
-    int rectNo = 20;
+    int rectNo = 1000;
     elems.reserve(rectNo);
     for(int i = 0; i < rectNo; i++)
     {
@@ -28,7 +28,7 @@ int main()
         elems.push_back(el);
     }
 
-    SortingAlgorithm* sorting = new BubbleSort(elems);
+    SortingAlgorithm* sorting = new QuickSort(elems);
     std::random_shuffle(elems.begin(), elems.end());
     // bubbleSort(heights);
     std::thread thread(&SortingAlgorithm::sort, sorting);

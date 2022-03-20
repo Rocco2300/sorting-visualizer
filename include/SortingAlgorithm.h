@@ -17,7 +17,7 @@ protected:
 public:
     SortingAlgorithm(std::vector<Element>& elems);
     virtual ~SortingAlgorithm() { }
-    void sort();
+    virtual void sort();
     bool isFinished();
 protected:
     virtual void _sort() { }
