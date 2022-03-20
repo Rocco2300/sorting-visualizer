@@ -19,6 +19,7 @@ void QuickSort::quickSort(int low, int high)
 int QuickSort::partition(int low, int high)
 {
     int pivot = elems->at(high).height;
+    elems->at(high).color = sf::Color::Red;
     int i = (low - 1);
 
     for(int j = low; j < high; j++)
@@ -30,6 +31,7 @@ int QuickSort::partition(int low, int high)
         }
     }
     std::swap(elems->at(i+1), elems->at(high));
+    elems->at(i+1).color = sf::Color::White;
     return i+1;
 }
 
