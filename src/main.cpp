@@ -28,7 +28,7 @@ int main()
         elems.push_back(el);
     }
 
-    SortingAlgorithm* sorting = new BubbleSort(elems);
+    SortingAlgorithm* sorting = new QuickSort(elems);
     std::random_shuffle(elems.begin(), elems.end());
     // bubbleSort(heights);
     std::thread thread(&SortingAlgorithm::sort, sorting);
@@ -42,14 +42,15 @@ int main()
             if (event.type == sf::Event::Closed)
             {
                 window.close();
-                thread.detach();
+                if(thread.joinable())
+                    thread.detach();
             }
         }
 
         window.clear();
         for(int i = 0; i < rectNo; i++)
         {
-            sf::RectangleShape temp({WINDOW_WIDTH / rectNo, elems[i].height});
+            sf::RectangleShape temp({WINDOW_WIDTH / (float)rectNo, elems[i].height});
             temp.setFillColor(elems[i].color);
             temp.setOrigin({WINDOW_WIDTH / (float)rectNo, elems[i].height});
             temp.setPosition({WINDOW_WIDTH / (float)rectNo * i + WINDOW_WIDTH / rectNo, WINDOW_HEIGHT});
