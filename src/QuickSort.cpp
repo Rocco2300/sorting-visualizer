@@ -8,18 +8,19 @@ void QuickSort::quickSort(int low, int high)
 {
     if(low < high)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         int pivot = partition(low, high);
+        elems->at(pivot).color = sf::Color::Red;
 
         quickSort(low, pivot-1);
         quickSort(pivot+1, high);
+        elems->at(pivot).color = sf::Color::White;
     }
 }
 
 int QuickSort::partition(int low, int high)
 {
     int pivot = elems->at(high).height;
-    elems->at(high).color = sf::Color::Red;
     int i = (low - 1);
 
     for(int j = low; j < high; j++)
@@ -31,7 +32,6 @@ int QuickSort::partition(int low, int high)
         }
     }
     std::swap(elems->at(i+1), elems->at(high));
-    elems->at(i+1).color = sf::Color::White;
     return i+1;
 }
 
