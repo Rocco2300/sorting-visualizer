@@ -18,7 +18,7 @@ int main()
 
     std::vector<Element> elems;
 
-    int rectNo = 100;
+    int rectNo = 10;
     elems.reserve(rectNo);
     for(int i = 0; i < rectNo; i++)
     {
