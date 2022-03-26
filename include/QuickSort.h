@@ -4,8 +4,6 @@
 
 class QuickSort : public SortingAlgorithm
 {
-private:
-
 public:
     QuickSort(std::vector<Element>& elems);
 private:

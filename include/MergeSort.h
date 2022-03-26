@@ -4,7 +4,6 @@
 
 class MergeSort : public SortingAlgorithm
 {
-private:
 public:
     MergeSort(std::vector<Element>& elems);
 private:
