@@ -7,6 +7,7 @@
 #include "BubbleSort.h"
 #include "QuickSort.h"
 #include "MergeSort.h"
+#include "InsertionSort.h"
 
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 400;
@@ -19,7 +20,7 @@ int main()
 
     std::vector<Element> elems;
 
-    int rectNo = 500;
+    int rectNo = 50;
     elems.reserve(rectNo);
     for(int i = 0; i < rectNo; i++)
     {
@@ -29,7 +30,7 @@ int main()
         elems.push_back(el);
     }
 
-    SortingAlgorithm* sorting = new MergeSort(elems);
+    SortingAlgorithm* sorting = new InsertionSort(elems);
     std::random_shuffle(elems.begin(), elems.end());
     // bubbleSort(heights);
     std::thread thread(&SortingAlgorithm::sort, sorting);
