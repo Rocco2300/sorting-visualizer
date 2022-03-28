@@ -9,6 +9,7 @@
 #include "MergeSort.h"
 #include "InsertionSort.h"
 #include "SelectionSort.h"
+#include "CountSort.h"
 
 const int WINDOW_WIDTH = 600;
 const int WINDOW_HEIGHT = 400;
@@ -31,7 +32,7 @@ int main()
         elems.push_back(el);
     }
 
-    SortingAlgorithm* sorting = new SelectionSort(elems);
+    SortingAlgorithm* sorting = new CountSort(elems);
     std::random_shuffle(elems.begin(), elems.end());
     // bubbleSort(heights);
     std::thread thread(&SortingAlgorithm::sort, sorting);
