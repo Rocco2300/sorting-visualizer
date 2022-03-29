@@ -4,11 +4,12 @@ TARGET = a
 
 SRC = src
 OBJ = obj
-INC = include
+INC = -Iinclude
 LIB = lib
-LIBS = -l sfml-graphics -l sfml-window -l sfml-system
+LIBS = -l sfml-graphics -l sfml-window -l sfml-system -l opengl32
 
 SRCS = $(wildcard $(SRC)/*.cpp)
+# OBJS = $(patsubst %.o,%.c,$(OBJ)/**)
 OBJS = $(SRCS:$(SRC)/%.cpp=$(OBJ)/%.o)
 
 .PHONY: all install clean
@@ -17,7 +18,7 @@ $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ -L $(LIB) $(LIBS)
 
 $(OBJ)/%.o: $(SRC)/%.cpp
-	$(CXX) $(CXXFLAGS) -I $(INC) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
 
 install: 
 	@mkdir obj
