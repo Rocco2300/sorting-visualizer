@@ -38,11 +38,9 @@ int main()
         elems.push_back(el);
     }
 
+    std::thread thread;
     SortingAlgorithm* sorting = new BubbleSort(elems);
     std::random_shuffle(elems.begin(), elems.end());
-    // bubbleSort(heights);
-    std::thread thread(&SortingAlgorithm::sort, sorting);
-    // sorting->sort();
 
     while (window.isOpen())
     {   
@@ -63,8 +61,19 @@ int main()
 
         ImGui::SFML::Update(window, dt);
 
-        ImGui::Begin("Hello, World!");
-        ImGui::Button("Press");
+        ImGui::Begin("Hello, World!", NULL, ImGuiWindowFlags_NoTitleBar 
+                                            | ImGuiWindowFlags_NoMove
+                                            | ImGuiWindowFlags_NoResize);
+        if(ImGui::Button("Start") && !thread.joinable())
+        {
+            thread = std::thread(&SortingAlgorithm::sort, sorting);
+        }
+        ImGui::SameLine();
+        if(ImGui::Button("Pause") && thread.joinable())
+        {
+            sorting->stop();
+            thread = std::thread();
+        }
         ImGui::End();
 
         window.clear();
