@@ -20,18 +20,11 @@ $(TARGET): $(OBJS)
 $(OBJ)/%.o: $(SRC)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INC) -c $< -o $@
 
-install: 
-	@mkdir obj
-	@mkdir lib
-	@mkdir build
-	@git clone --branch 2.5.1 https://github.com/SFML/SFML.git
-	@cmake -G "MinGW Makefiles" -S SFML -B build
-	@cd build && mingw32-make
-	@move build\lib\*.a lib
-	@move build\lib\*.dll .
-	@move SFML\include\SFML include
-	@rd /s /q build
-	@rd /s /q SFML
+install:
+	@echo Building the libraries...
+	@build.bat
+	@echo Moving the libraries in the correct directories...
+	@install.bat
 
 clean:
 	del /f obj\\*.o
