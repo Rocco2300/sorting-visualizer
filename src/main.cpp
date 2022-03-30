@@ -4,17 +4,31 @@
 #include <random>
 #include <ctime>
 #include <algorithm>
-#include "BubbleSort.h"
 #include "imgui.h"
 #include "imgui-SFML.h"
-// #include "QuickSort.h"
-// #include "MergeSort.h"
-// #include "InsertionSort.h"
-// #include "SelectionSort.h"
-// #include "CountSort.h"
+#include "BubbleSort.h"
+#include "QuickSort.h"
+#include "MergeSort.h"
+#include "InsertionSort.h"
+#include "SelectionSort.h"
+#include "CountSort.h"
 
-const int WINDOW_WIDTH = 600;
-const int WINDOW_HEIGHT = 400;
+
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
+
+void initializeList(std::vector<Element>& elems, int rectNo)
+{
+    elems.reserve(rectNo);
+    int height = WINDOW_HEIGHT - 200;
+    for(int i = 0; i < rectNo; i++)
+    {
+        Element el;
+        el.height = (height - 20) * ((i+1) / (float)rectNo);
+        el.color = sf::Color::White;
+        elems.push_back(el);
+    }
+}
 
 int main()
 {
@@ -22,25 +36,27 @@ int main()
     sf::Time dt;
 
     srand(time(NULL));
-    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!", sf::Style::Close);
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
 
     std::vector<Element> elems;
 
-    int rectNo = 50;
-    elems.reserve(rectNo);
-    for(int i = 0; i < rectNo; i++)
-    {
-        Element el;
-        el.height = (WINDOW_HEIGHT - 20) * ((i+1) / (float)rectNo);
-        el.color = sf::Color::White;
-        elems.push_back(el);
-    }
+    int rectNo = 300;
+    initializeList(elems, rectNo);
+    // elems.reserve(rectNo);
+    // int height = WINDOW_HEIGHT - 200;
+    // for(int i = 0; i < rectNo; i++)
+    // {
+    //     Element el;
+    //     el.height = (height - 20) * ((i+1) / (float)rectNo);
+    //     el.color = sf::Color::White;
+    //     elems.push_back(el);
+    // }
+    std::random_shuffle(elems.begin(), elems.end());
 
     std::thread thread;
-    SortingAlgorithm* sorting = new BubbleSort(elems);
-    std::random_shuffle(elems.begin(), elems.end());
+    SortingAlgorithm* sorting = new MergeSort(elems);
 
     while (window.isOpen())
     {   
@@ -68,11 +84,10 @@ int main()
         {
             thread = std::thread(&SortingAlgorithm::sort, sorting);
         }
-        ImGui::SameLine();
-        if(ImGui::Button("Pause") && thread.joinable())
+        if(ImGui::SliderInt("Element No.", &rectNo, 50, 800))
         {
-            sorting->stop();
-            thread = std::thread();
+            initializeList(elems, rectNo);
+            std::random_shuffle(elems.begin(), elems.end());
         }
         ImGui::End();
 
@@ -81,8 +96,8 @@ int main()
         {
             sf::RectangleShape temp({WINDOW_WIDTH / (float)rectNo, elems[i].height});
             temp.setFillColor(elems[i].color);
-            temp.setOrigin({WINDOW_WIDTH / (float)rectNo, elems[i].height});
-            temp.setPosition({WINDOW_WIDTH / (float)rectNo * i + WINDOW_WIDTH / rectNo, WINDOW_HEIGHT});
+            temp.setOrigin({0, elems[i].height});
+            temp.setPosition({WINDOW_WIDTH / (float)rectNo * i, WINDOW_HEIGHT});
             window.draw(temp);
         }
         ImGui::SFML::Render(window);

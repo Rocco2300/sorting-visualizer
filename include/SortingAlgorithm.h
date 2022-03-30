@@ -13,14 +13,12 @@ class SortingAlgorithm
 {
 protected:
     bool finished;
-    bool stopping;
     std::vector<Element>* elems;
 public:
     SortingAlgorithm(std::vector<Element>& elems);
     virtual ~SortingAlgorithm() { }
     virtual void sort();
     bool isFinished();
-    void stop();
 protected:
     virtual void _sort() { }
 };
