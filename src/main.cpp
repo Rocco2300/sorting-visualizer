@@ -19,6 +19,7 @@ const int WINDOW_HEIGHT = 600;
 
 void initializeList(std::vector<Element>& elems, int rectNo)
 {
+    elems.clear();
     elems.reserve(rectNo);
     int height = WINDOW_HEIGHT - 200;
     for(int i = 0; i < rectNo; i++)
@@ -42,7 +43,7 @@ int main()
 
     std::vector<Element> elems;
 
-    int rectNo = 300;
+    int rectNo = 1000;
     initializeList(elems, rectNo);
     // elems.reserve(rectNo);
     // int height = WINDOW_HEIGHT - 200;
@@ -84,7 +85,7 @@ int main()
         {
             thread = std::thread(&SortingAlgorithm::sort, sorting);
         }
-        if(ImGui::SliderInt("Element No.", &rectNo, 50, 800))
+        if(ImGui::SliderInt("Element No.", &rectNo, 50, 2048))
         {
             initializeList(elems, rectNo);
             std::random_shuffle(elems.begin(), elems.end());
