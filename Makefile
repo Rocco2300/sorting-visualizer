@@ -4,13 +4,13 @@ TARGET = a
 
 SRC = src
 OBJ = obj
-INC = -Iinclude
+INC = -Iinclude -Iinclude/imgui
 LIB = lib
 LIBS = -l sfml-graphics -l sfml-window -l sfml-system -l opengl32
 
-SRCS = $(wildcard $(SRC)/*.cpp)
-# OBJS = $(patsubst %.o,%.c,$(OBJ)/**)
-OBJS = $(SRCS:$(SRC)/%.cpp=$(OBJ)/%.o)
+SRCS = $(wildcard $(SRC)/*.cpp $(SRC)/imgui/*.cpp)
+OBJS = $(patsubst $(SRC)/%.cpp, $(OBJ)/%.o, $(SRCS))
+# OBJS = $(SRCS:$(SRC)/%.cpp=$(OBJ)/%.o)
 
 .PHONY: all install clean
 
