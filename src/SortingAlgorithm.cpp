@@ -3,13 +3,12 @@
 SortingAlgorithm::SortingAlgorithm(std::vector<Element>& elems)
 {
     this->elems = &elems;
-    this->finished = true;
+    this->finished = false;
     this->delay = 10;
 }
 
 void SortingAlgorithm::sort()
 {
-    finished = false;
     _sort();
     finished = true;
 }

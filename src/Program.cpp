@@ -22,13 +22,46 @@ Program::Program()
     if(!ImGui::SFML::Init(window))
         std::cerr << "Error opening imgui window!\n";
 
+    buildAlgorithmList();
+    currentItem = 0;
+
     delay = 5;
     elementNo = 1000;
     initializeList();
     std::random_shuffle(elements.begin(), elements.end());
+    shuffled = true;
 
-    sortingAlgorithm = new QuickSort(elements);
+    sortingAlgorithm = algorithmList[currentItem];
     sortingAlgorithm->setDelay(delay);
+}
+
+Program::~Program()
+{
+    destroyAlgorithmList();
+}
+
+void Program::buildAlgorithmList()
+{
+    algorithmIndexes[0] = "Bubble Sort";
+    algorithmIndexes[1] = "Selection Sort";
+    algorithmIndexes[2] = "Insertion Sort";
+    algorithmIndexes[3] = "Merge Sort";
+    algorithmIndexes[4] = "Quick Sort";
+    algorithmIndexes[5] = "Count Sort";
+    algorithmList[0] = new BubbleSort(elements);
+    algorithmList[1] = new SelectionSort(elements);
+    algorithmList[2] = new InsertionSort(elements);
+    algorithmList[3] = new MergeSort(elements);
+    algorithmList[4] = new QuickSort(elements);
+    algorithmList[5] = new CountSort(elements);
+}
+
+void Program::destroyAlgorithmList()
+{
+    for(int i = 0; i < 6; i++)
+    {
+        delete algorithmList[i];
+    }
 }
 
 void Program::initializeList()
@@ -70,17 +103,34 @@ void Program::update()
                                             | ImGuiWindowFlags_NoMove
                                             | ImGuiWindowFlags_NoResize);
 
-        if(ImGui::Button("Start", {60, 30}) && !thread.joinable())
+        if(ImGui::Button("Start", {60, 20}) && !thread.joinable())
         {
+            if(!shuffled)
+            {
+                std::random_shuffle(elements.begin(), elements.end());
+                shuffled = true;
+            }
             thread = std::thread(&SortingAlgorithm::sort, sortingAlgorithm);
         }
-        ImGui::PushItemWidth(200);
-        if(ImGui::SliderInt("Element No.", &elementNo, 50, 2048))
+        ImGui::SameLine(0.f, 10.f);
+        if(ImGui::Button("Shuffle", {60, 20}) && !thread.joinable())
         {
-            initializeList();
+            shuffled = true;
             std::random_shuffle(elements.begin(), elements.end());
         }
+        ImGui::SameLine(500.f, 0.f);
+        ImGui::PushItemWidth(200);
+        if(ImGui::Combo("Algorithm", &currentItem, algorithmIndexes, 6))
+        {
+            actions.push(Action::AlgorithmChange);
+        }
+        ImGui::Spacing();
+        if(ImGui::SliderInt("Element No.", &elementNo, 50, 2048))
+        {
+            actions.push(Action::Resize);
+        }
         ImGui::SameLine(0.f, 10.f);
+        ImGui::PushItemWidth(150);
         if(ImGui::SliderInt("Delay", &delay, 1, 125))
         {
             sortingAlgorithm->setDelay(delay);
@@ -89,12 +139,13 @@ void Program::update()
         ImGui::End();
 
         window.clear();
-        for(int i = 0; i < elementNo; i++)
+        for(size_t i = 0; i < elements.size(); i++)
         {
-            sf::RectangleShape temp({WINDOW_WIDTH / (float)elementNo, elements[i].height});
+            int elems = elements.size();
+            sf::RectangleShape temp({WINDOW_WIDTH / (float)elems, elements[i].height});
             temp.setFillColor(elements[i].color);
             temp.setOrigin({0, elements[i].height});
-            temp.setPosition({WINDOW_WIDTH / (float)elementNo * i, WINDOW_HEIGHT});
+            temp.setPosition({WINDOW_WIDTH / (float)elems * i, WINDOW_HEIGHT});
             window.draw(temp);
         }
         ImGui::SFML::Render(window);
@@ -103,8 +154,33 @@ void Program::update()
         if(sortingAlgorithm->isFinished() && thread.joinable())
         {
             thread.join();
+            shuffled = false;
             std::cout << "Done" << std::endl;
         }
+        
+        if(!thread.joinable())
+            performActions();
     }
     ImGui::SFML::Shutdown();
+}
+
+void Program::performActions()
+{
+    Action action;
+    while(!actions.empty())
+    {
+        action = actions.top();
+        actions.pop();
+
+        switch(action)
+        {
+        case Resize:
+            initializeList();
+            std::random_shuffle(elements.begin(), elements.end());
+            break;
+        case AlgorithmChange:
+            sortingAlgorithm = algorithmList[currentItem];
+            break;
+        }
+    }
 }
