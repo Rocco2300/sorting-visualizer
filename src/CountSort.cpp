@@ -12,7 +12,7 @@ int CountSort::getMax()
     for(size_t i = 0; i < elems->size(); i++)
     {
         elems->at(i).color = sf::Color::Red;
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         if(elems->at(i).height > max)
         {
             max = elems->at(i).height;
@@ -47,14 +47,14 @@ void CountSort::_sort()
         int index = elems->at(i).height;
         output[count[index] - 1] =  elems->at(i);
         elems->at(i).color = sf::Color::Red;
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         count[index]--;
         elems->at(i).color = sf::Color::White;
     }
     
     for(size_t i = 0; i < elems->size(); i++)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         elems->at(i) = output[i];
     }
 }

@@ -10,14 +10,14 @@ void BubbleSort::_sort()
     {
         for(size_t j = 0; j < elems->size()-i-1; j++)
         {
-            if(elems->at(j).height > elems->at(j+1).height)
+            if(elems->at(j).height < elems->at(j+1).height)
             {
                 elems->at(j).color = sf::Color::Red;
                 std::swap(elems->at(j), elems->at(j+1));
             }
             else
                 elems->at(j).color = sf::Color::White;
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
         }
         elems->at(elems->size()-i-1).color = sf::Color::White;
     }
