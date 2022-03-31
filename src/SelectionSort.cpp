@@ -10,10 +10,10 @@ void SelectionSort::_sort()
     {
         int minI = i;
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         for(size_t j = i+1; j < elems->size(); j++)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
+            std::this_thread::sleep_for(std::chrono::milliseconds(delay));
             if(elems->at(j).height < elems->at(minI).height)
                 minI = j;
         }
