@@ -22,11 +22,13 @@ Program::Program()
     if(!ImGui::SFML::Init(window))
         std::cerr << "Error opening imgui window!\n";
 
+    delay = 5;
     elementNo = 1000;
     initializeList();
     std::random_shuffle(elements.begin(), elements.end());
 
-    sortingAlgorithm = new BubbleSort(elements);
+    sortingAlgorithm = new QuickSort(elements);
+    sortingAlgorithm->setDelay(delay);
 }
 
 void Program::initializeList()
@@ -77,6 +79,11 @@ void Program::update()
         {
             initializeList();
             std::random_shuffle(elements.begin(), elements.end());
+        }
+        ImGui::SameLine(0.f, 10.f);
+        if(ImGui::SliderInt("Delay", &delay, 1, 125))
+        {
+            sortingAlgorithm->setDelay(delay);
         }
         ImGui::PopItemWidth();
         ImGui::End();

@@ -25,7 +25,7 @@ void MergeSort::merge(int low, int mid, int high)
 
     while(i < sizeOne && j < sizeTwo)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         if(one[i].height <= two[j].height)
             elems->at(k++) = one[i++];
         else
@@ -34,13 +34,13 @@ void MergeSort::merge(int low, int mid, int high)
 
     while(i < sizeOne)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         elems->at(k++) = one[i++];
     }
 
     while(j < sizeTwo)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
         elems->at(k++) = two[j++];
     }
@@ -53,7 +53,7 @@ void MergeSort::mergeSort(int low, int high)
     
     int mid = low + (high - low) / 2;
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
     mergeSort(low, mid);
     mergeSort(mid+1, high);

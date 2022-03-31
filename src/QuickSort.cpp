@@ -11,7 +11,7 @@ void QuickSort::quickSort(int low, int high)
 {
     if(low < high)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         int pivot = lomutoPartition(low, high);
         elems->at(pivot).color = sf::Color::Red;
 

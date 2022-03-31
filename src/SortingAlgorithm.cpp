@@ -4,6 +4,7 @@ SortingAlgorithm::SortingAlgorithm(std::vector<Element>& elems)
 {
     this->elems = &elems;
     this->finished = true;
+    this->delay = 10;
 }
 
 void SortingAlgorithm::sort()
@@ -16,4 +17,9 @@ void SortingAlgorithm::sort()
 bool SortingAlgorithm::isFinished()
 {
     return finished;
+}
+
+void SortingAlgorithm::setDelay(int delay)
+{
+    this->delay = delay;
 }

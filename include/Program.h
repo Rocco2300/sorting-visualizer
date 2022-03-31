@@ -12,6 +12,7 @@ private:
     sf::Clock clock;
     sf::Time dt;
 
+    int delay;
     int elementNo;
     std::vector<Element> elements;
     std::thread thread;
