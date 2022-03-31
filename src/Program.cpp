@@ -22,16 +22,16 @@ Program::Program()
     if(!ImGui::SFML::Init(window))
         std::cerr << "Error opening imgui window!\n";
 
-    buildAlgorithmList();
-    currentItem = 0;
-
     delay = 5;
     elementNo = 1000;
     initializeList();
     std::random_shuffle(elements.begin(), elements.end());
     shuffled = true;
 
-    sortingAlgorithm = algorithmList[currentItem];
+    currentItem = 0;
+    buildAlgorithmList();
+    // sortingAlgorithm = algorithmList[currentItem];
+    sortingAlgorithm = new BubbleSort(elements);
     sortingAlgorithm->setDelay(delay);
 }
 
