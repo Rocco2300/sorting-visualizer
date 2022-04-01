@@ -23,9 +23,9 @@ private:
     std::vector<Element> elements;
     std::stack<Action> actions;
 
-    const char* algorithmIndexes[6];
+    const char* algorithmIndexes[7];
     SortingAlgorithm* sortingAlgorithm;
-    SortingAlgorithm* algorithmList[6];
+    SortingAlgorithm* algorithmList[7];
     
     int delay;
     int elementNo;

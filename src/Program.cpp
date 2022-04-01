@@ -11,7 +11,7 @@
 #include "MergeSort.h"
 #include "InsertionSort.h"
 #include "SelectionSort.h"
-#include "CountSort.h"
+#include "RadixSort.h"
 
 Program::Program()
 {
@@ -48,12 +48,14 @@ void Program::buildAlgorithmList()
     algorithmIndexes[3] = "Merge Sort";
     algorithmIndexes[4] = "Quick Sort";
     algorithmIndexes[5] = "Count Sort";
+    algorithmIndexes[6] = "Radix Sort";
     algorithmList[0] = new BubbleSort(elements);
     algorithmList[1] = new SelectionSort(elements);
     algorithmList[2] = new InsertionSort(elements);
     algorithmList[3] = new MergeSort(elements);
     algorithmList[4] = new QuickSort(elements);
     algorithmList[5] = new CountSort(elements);
+    algorithmList[6] = new RadixSort(elements);
 }
 
 void Program::destroyAlgorithmList()
@@ -120,7 +122,7 @@ void Program::update()
         }
         ImGui::SameLine(500.f, 0.f);
         ImGui::PushItemWidth(200);
-        if(ImGui::Combo("Algorithm", &currentItem, algorithmIndexes, 6))
+        if(ImGui::Combo("Algorithm", &currentItem, algorithmIndexes, 7))
         {
             actions.push(Action::AlgorithmChange);
         }
