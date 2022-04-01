@@ -59,7 +59,29 @@ void CountSort::_sort()
     }
 }
 
-void CountSort::countSort(int exp)
+
+RadixSort::RadixSort(std::vector<Element>& elems) : SortingAlgorithm(elems)
+{
+}
+
+int RadixSort::getMax()
+{
+    int max = 0;
+    
+    for(size_t i = 0; i < elems->size(); i++)
+    {
+        elems->at(i).color = sf::Color::Red;
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+        if(elems->at(i).height > max)
+        {
+            max = elems->at(i).height;
+        }
+        elems->at(i).color = sf::Color::White;
+    }
+    return max;
+}
+
+void RadixSort::countSort(int exp)
 {
     std::vector<Element> output;
     output.reserve(elems->size());
@@ -96,15 +118,10 @@ void CountSort::countSort(int exp)
     }
 }
 
-RadixSort::RadixSort(std::vector<Element>& elems) : SortingAlgorithm(elems)
-{
-    countSort = new CountSort(elems);
-}
-
 void RadixSort::_sort()
 {
-    int max = countSort->getMax();
+    int max = getMax();
 
     for(int exp = 1; max / exp > 0; exp *= 10)
-        countSort->countSort(exp);
+        countSort(exp);
 }
