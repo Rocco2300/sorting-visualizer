@@ -8,16 +8,16 @@ void SelectionSort::_sort()
 {
     for(size_t i = 0; i < elems->size(); i++)
     {
-        int minI = i;
+        int index = i;
 
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         for(size_t j = i+1; j < elems->size(); j++)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-            if(elems->at(j).height < elems->at(minI).height)
-                minI = j;
+            if(compare(elems->at(index).height, elems->at(j).height))
+                index = j;
         }
 
-        std::swap(elems->at(i), elems->at(minI));
+        std::swap(elems->at(i), elems->at(index));
     }
 }

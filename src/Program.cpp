@@ -27,6 +27,7 @@ Program::Program()
     initializeList();
     std::random_shuffle(elements.begin(), elements.end());
     shuffled = true;
+    descending = false;
 
     currentItem = 0;
     buildAlgorithmList();
@@ -120,6 +121,11 @@ void Program::update()
             shuffled = true;
             std::random_shuffle(elements.begin(), elements.end());
         }
+        ImGui::SameLine(0.f, 10.f);
+        if(ImGui::Checkbox("Descending", &descending))
+        {
+            actions.push(Action::Descending);
+        }
         ImGui::SameLine(500.f, 0.f);
         ImGui::PushItemWidth(200);
         if(ImGui::Combo("Algorithm", &currentItem, algorithmIndexes, 7))
@@ -182,6 +188,9 @@ void Program::performActions()
             break;
         case AlgorithmChange:
             sortingAlgorithm = algorithmList[currentItem];
+            break;
+        case Descending:
+            sortingAlgorithm->setDescending(descending);
             break;
         }
     }

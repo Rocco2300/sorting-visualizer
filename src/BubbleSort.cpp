@@ -10,7 +10,7 @@ void BubbleSort::_sort()
     {
         for(size_t j = 0; j < elems->size()-i-1; j++)
         {
-            if(elems->at(j).height > elems->at(j+1).height)
+            if(compare(elems->at(j).height, elems->at(j+1).height))
             {
                 elems->at(j).color = sf::Color::Red;
                 std::swap(elems->at(j), elems->at(j+1));

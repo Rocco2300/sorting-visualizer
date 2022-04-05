@@ -26,7 +26,7 @@ void MergeSort::merge(int low, int mid, int high)
     while(i < sizeOne && j < sizeTwo)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        if(one[i].height <= two[j].height)
+        if(compare(two[j].height, one[i].height))
             elems->at(k++) = one[i++];
         else
             elems->at(k++) = two[j++];

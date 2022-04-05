@@ -29,7 +29,7 @@ int QuickSort::lomutoPartition(int low, int high)
     for(int j = low; j < high; j++)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        if(elems->at(j).height < pivot)
+        if(compare(pivot, elems->at(j).height))
         {
             i++;
             std::swap(elems->at(i), elems->at(j));

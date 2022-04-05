@@ -11,7 +11,7 @@ void InsertionSort::_sort()
         auto key = elems->at(i);
         int j = i - 1;
 
-        while(j >= 0 && elems->at(j).height > key.height)
+        while(j >= 0 && compare(elems->at(j).height, key.height))
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(delay));
             elems->at(j+1) = elems->at(j);

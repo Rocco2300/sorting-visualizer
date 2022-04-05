@@ -13,6 +13,7 @@ class SortingAlgorithm
 {
 protected:
     bool finished;
+    bool descending;
     std::vector<Element>* elems;
     int delay;
 public:
@@ -21,6 +22,8 @@ public:
     virtual void sort();
     bool isFinished();
     void setDelay(int delay);
+    void setDescending(bool value);
 protected:
     virtual void _sort() { }
+    bool compare(int a, int b);
 };

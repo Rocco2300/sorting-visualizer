@@ -9,7 +9,8 @@ const int WINDOW_HEIGHT = 600;
 enum Action
 {
     Resize,
-    AlgorithmChange
+    AlgorithmChange,
+    Descending
 };
 
 class Program
@@ -31,6 +32,7 @@ private:
     int elementNo;
     int currentItem;
     bool shuffled;
+    bool descending;
 public:
     Program();
     ~Program();

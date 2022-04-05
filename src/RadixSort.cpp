@@ -45,7 +45,7 @@ void CountSort::_sort()
     for(int i = elems->size()-1; i >= 0; i--)
     {
         int index = elems->at(i).height;
-        output[count[index] - 1] =  elems->at(i);
+        output[max - count[index] - 1] =  elems->at(i);
         elems->at(i).color = sf::Color::Red;
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         count[index]--;
@@ -58,7 +58,6 @@ void CountSort::_sort()
         elems->at(i) = output[i];
     }
 }
-
 
 RadixSort::RadixSort(std::vector<Element>& elems) : SortingAlgorithm(elems)
 {
