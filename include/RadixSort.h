@@ -4,6 +4,8 @@
 
 class CountSort : public SortingAlgorithm
 {
+private:
+    friend class RadixSort;
 public:
     CountSort(std::vector<Element>& elems);
     int getMax();
@@ -13,10 +15,12 @@ private:
 
 class RadixSort : public SortingAlgorithm
 {
+private:
 public:
     RadixSort(std::vector<Element>& elems);
     void _sort() override;
 private:
     int getMax();
-    void countSort(int exp);
+    void countSortAsc(int exp);
+    void countSortDesc(int exp);
 };

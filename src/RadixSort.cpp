@@ -83,7 +83,7 @@ int RadixSort::getMax()
     return max;
 }
 
-void RadixSort::countSort(int exp)
+void RadixSort::countSortAsc(int exp)
 {
     std::vector<Element> output;
     output.reserve(elems->size());
@@ -101,34 +101,53 @@ void RadixSort::countSort(int exp)
     for(int i = 1; i <= 9; i++)
         count[i] += count[i-1];
 
-    
-    if(!descending)
+    for(int i = elems->size()-1; i >= 0; i--)
     {
-        for(int i = elems->size()-1; i >= 0; i--)
-        {
-            int height = elems->at(i).height;
-            int index = (height / exp) % 10;
+        int height = elems->at(i).height;
+        int index = (height / exp) % 10;
 
-            output[count[index] - 1] = elems->at(i);
-            elems->at(i).color = sf::Color::Red;
-            std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-            count[index]--;
-            elems->at(i).color = sf::Color::White;
-        }
+        output[count[index] - 1] = elems->at(i);
+        elems->at(i).color = sf::Color::Red;
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+        count[index]--;
+        elems->at(i).color = sf::Color::White;
     }
-    else
-    {
-        for(int i = 0; i < elems->size(); i++)
-        {
-            int height = elems->at(i).height;
-            int index = (height / exp) % 10;
 
-            output[9 - count[index] - (9 - elems->size())] = elems->at(i);
-            elems->at(i).color = sf::Color::Red;
-            std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-            count[index]--;
-            elems->at(i).color = sf::Color::White;
-        }
+    for(size_t i = 0; i < elems->size(); i++)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+        elems->at(i) = output[i];
+    }
+}
+
+void RadixSort::countSortDesc(int exp)
+{
+    std::vector<Element> output;
+    output.reserve(elems->size());
+
+    int count[10] = { 0 };
+
+    for(size_t i = 0; i < elems->size(); i++)
+    {
+        int height = elems->at(i).height;
+        int index = (height / exp) % 10;
+
+        count[index]++;
+    }
+
+    for(int i = 1; i <= 9; i++)
+        count[i] += count[i-1];
+
+    for(size_t i = 0; i < elems->size(); i++)
+    {
+        int height = elems->at(i).height;
+        int index = (height / exp) % 10;
+
+        output[9 - count[index] - (9 - elems->size())] = elems->at(i);
+        elems->at(i).color = sf::Color::Red;
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+        count[index]--;
+        elems->at(i).color = sf::Color::White;
     }
 
     for(size_t i = 0; i < elems->size(); i++)
@@ -143,5 +162,10 @@ void RadixSort::_sort()
     int max = getMax();
 
     for(int exp = 1; max / exp > 0; exp *= 10)
-        countSort(exp);
+    {
+        if(!descending)
+            countSortAsc(exp);
+        else
+            countSortDesc(exp);
+    }
 }
