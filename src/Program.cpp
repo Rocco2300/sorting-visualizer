@@ -19,7 +19,7 @@
 Program::Program()
 {
     srand(time(NULL));
-    window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!", sf::Style::Close);
+    window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Sorting Visualizer", sf::Style::Close);
     window.setFramerateLimit(60);
     
     if(!ImGui::SFML::Init(window))
