@@ -45,7 +45,10 @@ void CountSort::_sort()
     for(int i = elems->size()-1; i >= 0; i--)
     {
         int index = elems->at(i).height;
-        output[max - count[index] - 1] =  elems->at(i);
+        int outputIndex = descending? max - count[index] - (max - elems->size())
+                                    : count[index] - 1;
+
+        output[outputIndex] =  elems->at(i);
         elems->at(i).color = sf::Color::Red;
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         count[index]--;
