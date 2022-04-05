@@ -11,6 +11,7 @@
 #include "MergeSort.h"
 #include "InsertionSort.h"
 #include "SelectionSort.h"
+#include "CountSort.h"
 #include "RadixSort.h"
 
 Program::Program()
