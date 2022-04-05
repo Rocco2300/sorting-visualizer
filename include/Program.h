@@ -18,7 +18,6 @@ class Program
 private:
     sf::RenderWindow window;
     sf::Clock clock;
-    sf::Time dt;
 
     std::thread thread;
     std::vector<Element> elements;
@@ -42,4 +41,6 @@ public:
     void performActions();
 private:
     void initializeList();
+    void handleEvents();
+    void draw();
 };

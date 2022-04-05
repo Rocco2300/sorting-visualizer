@@ -4,8 +4,10 @@
 #include <random>
 #include <ctime>
 #include <algorithm>
+
 #include "imgui.h"
 #include "imgui-SFML.h"
+
 #include "BubbleSort.h"
 #include "QuickSort.h"
 #include "MergeSort.h"
@@ -82,26 +84,29 @@ void Program::initializeList()
     }
 }
 
+void Program::handleEvents()
+{
+    sf::Event event;
+    while (window.pollEvent(event))
+    {
+        ImGui::SFML::ProcessEvent(window, event);
+
+        if (event.type == sf::Event::Closed)
+        {
+            window.close();
+            if(thread.joinable())
+                thread.detach();
+        }
+    }
+}
+
 void Program::update()
 {
     while (window.isOpen())
     {   
-        dt = clock.restart();
+        handleEvents();
 
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            ImGui::SFML::ProcessEvent(window, event);
-
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-                if(thread.joinable())
-                    thread.detach();
-            }
-        }
-
-        ImGui::SFML::Update(window, dt);
+        ImGui::SFML::Update(window, clock.restart());
 
         ImGui::Begin("Hello, World!", NULL, ImGuiWindowFlags_NoTitleBar 
                                             | ImGuiWindowFlags_NoMove
@@ -147,18 +152,7 @@ void Program::update()
         ImGui::PopItemWidth();
         ImGui::End();
 
-        window.clear();
-        for(size_t i = 0; i < elements.size(); i++)
-        {
-            int elems = elements.size();
-            sf::RectangleShape temp({WINDOW_WIDTH / (float)elems, elements[i].height});
-            temp.setFillColor(elements[i].color);
-            temp.setOrigin({0, elements[i].height});
-            temp.setPosition({WINDOW_WIDTH / (float)elems * i, WINDOW_HEIGHT});
-            window.draw(temp);
-        }
-        ImGui::SFML::Render(window);
-        window.display();
+        draw();
 
         if(sortingAlgorithm->isFinished() && thread.joinable())
         {
@@ -171,6 +165,24 @@ void Program::update()
             performActions();
     }
     ImGui::SFML::Shutdown();
+}
+
+void Program::draw()
+{
+    window.clear();
+
+    for(size_t i = 0; i < elements.size(); i++)
+    {
+        int elems = elements.size();
+        sf::RectangleShape temp({WINDOW_WIDTH / (float)elems, elements[i].height});
+        temp.setFillColor(elements[i].color);
+        temp.setOrigin({0, elements[i].height});
+        temp.setPosition({WINDOW_WIDTH / (float)elems * i, WINDOW_HEIGHT});
+        window.draw(temp);
+    }
+    ImGui::SFML::Render(window);
+
+    window.display();
 }
 
 void Program::performActions()
