@@ -33,21 +33,6 @@ Program::Program()
         ElementList temp;
         elemLists.push_back(temp);
     }
-    for(int i = 0; i < 4; i++)
-    {
-        std::thread thread;
-        threadPool.push_back(std::move(thread));
-    }
-    for(int i = 0; i < 4; i++)
-    {
-        std::promise<bool> promise;
-        promises.push_back(std::move(promise));
-    }
-    for(int i = 0; i < 4; i++)
-    {
-        std::future<bool> future = promises[i].get_future();
-        futures.push_back(std::move(future));
-    }
 
     initializeLists(elemLists, listNumber);
     for(int i = 0; i < listNumber; i++)
@@ -138,7 +123,7 @@ void Program::handleEvents()
 
 bool allThreadsJoinable(std::vector<std::thread>& threadPool)
 {
-    for(int i = 0; i < 2; i++)
+    for(int i = 0; i < threadPool.size(); i++)
     {
         if(!threadPool[i].joinable())
             return false;
@@ -174,7 +159,7 @@ void Program::update()
                                             | ImGuiWindowFlags_NoMove
                                             | ImGuiWindowFlags_NoResize);
 
-        if(ImGui::Button("Start", {60, 20}) && !allThreadsJoinable(threadPool))
+        if(ImGui::Button("Start", {60, 20}) && allThreadsJoinable(threadPool))
         {
             if(!shuffled)
             {
@@ -185,10 +170,14 @@ void Program::update()
                 shuffled = true;
             }
 
-            for(int i = 0; i < 2; i++)
+            for(int i = 0; i < listNumber; i++)
             {
+                std::promise<bool> promise;
+                std::future<bool> future = promise.get_future();
                 bool temp = (i % 2 == 0) ? descending : !descending;
-                threadPool[i] = std::thread(&Program::initializer, this, std::ref(promises[i]), i, temp);
+                threadPool.push_back(std::thread(&Program::initializer, this, std::ref(promises[i]), i, temp));
+                promises.push_back(std::move(promise));
+                futures.push_back(std::move(future));
             }
         }
 
@@ -235,7 +224,7 @@ void Program::update()
         //     std::cout << "Done" << std::endl;
         // }
         
-        if(!allThreadsJoinable(threadPool))
+        if(allThreadsJoinable(threadPool))
             performActions();
     }
     ImGui::SFML::Shutdown();
