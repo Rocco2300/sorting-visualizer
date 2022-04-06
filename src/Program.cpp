@@ -33,6 +33,11 @@ Program::Program()
         ElementList temp;
         elemLists.push_back(temp);
     }
+
+    for(int i = 0; i < 4; i++)
+    {
+        threadPool.emplace_back();
+    }
     initializeLists(elemLists, listNumber);
     for(int i = 0; i < listNumber; i++)
     {
@@ -111,13 +116,23 @@ void Program::handleEvents()
         if (event.type == sf::Event::Closed)
         {
             window.close();
-            if(thread.joinable())
-                thread.detach();
-            
-            if(thread1.joinable())
-                thread1.detach();
+            for(int i = 0; i < 4; i++)
+            {
+                if(threadPool[i].joinable())
+                    threadPool[i].detach();
+            }
         }
     }
+}
+
+bool allThreadsJoinable(std::vector<std::thread>& threadPool)
+{
+    for(int i = 0; i < 2; i++)
+    {
+        if(!threadPool[i].joinable())
+            return false;
+    }
+    return true;
 }
 
 void Program::update()
@@ -132,7 +147,7 @@ void Program::update()
                                             | ImGuiWindowFlags_NoMove
                                             | ImGuiWindowFlags_NoResize);
 
-        if(ImGui::Button("Start", {60, 20}) && !thread.joinable())
+        if(ImGui::Button("Start", {60, 20}) && !allThreadsJoinable(threadPool))
         {
             if(!shuffled)
             {
@@ -142,11 +157,17 @@ void Program::update()
                 }
                 shuffled = true;
             }
-            thread = std::thread(&SortingAlgorithm::sort, sortingAlgorithm, 
-                std::ref<std::vector<Element>>(elemLists[0]), descending);
+
+            for(int i = 0; i < 2; i++)
+            {
+                bool temp = (i % 2 == 0) ? descending : !descending;
+                threadPool[i] = std::thread(&SortingAlgorithm::sort, sortingAlgorithm, 
+                    std::ref<ElementList>(elemLists[i]), temp);
+            }
         }
+
         ImGui::SameLine(0.f, 10.f);
-        if(ImGui::Button("Shuffle", {60, 20}) && !thread.joinable())
+        if(ImGui::Button("Shuffle", {60, 20}) && !allThreadsJoinable(threadPool))
         {
             shuffled = true;
             for(int i = 0; i < listNumber; i++)
@@ -178,14 +199,17 @@ void Program::update()
 
         draw();
 
-        if(sortingAlgorithm->isFinished() && thread.joinable() && thread1.joinable())
+        if(sortingAlgorithm->isFinished() && allThreadsJoinable(threadPool))
         {
-            thread.join();
+            for(int i = 0; i < 2; i++)
+            {
+                threadPool[i].join();
+            }
             shuffled = false;
             std::cout << "Done" << std::endl;
         }
         
-        if(!thread.joinable())
+        if(!allThreadsJoinable(threadPool))
             performActions();
     }
     ImGui::SFML::Shutdown();

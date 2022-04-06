@@ -18,8 +18,7 @@ private:
     sf::RenderWindow window;
     sf::Clock clock;
 
-    std::thread thread;
-    std::thread thread1;
+    std::vector<std::thread> threadPool;
     std::vector<ElementList> elemLists;
     std::stack<Action> actions;
 
