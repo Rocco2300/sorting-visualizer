@@ -74,7 +74,7 @@ void Program::buildAlgorithmList()
 
 void Program::destroyAlgorithmList()
 {
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < 7; i++)
     {
         delete algorithmList[i];
     }
@@ -102,6 +102,29 @@ void Program::initializeLists(std::vector<ElementList>& elemLists, int no)
     }
 }
 
+void Program::checkThreadProgress()
+{
+    for(int i = threadPool.size()-1; i >= 0; i--)
+    {
+        if(futures[i].wait_for(std::chrono::seconds(0)) == std::future_status::ready)
+        {
+            int ret = futures[i].get();
+            if(ret)
+            {
+                threadPool[i].join();
+                threadPool.erase(threadPool.begin() + i);
+                futures.erase(futures.begin() + i);
+            }
+        }
+    }
+}
+
+void Program::initializer(std::promise<bool>&& promise, int i, bool desc)
+{
+    bool ret = sortingAlgorithm->sort(elemLists[i], desc);
+    promise.set_value(ret);
+}
+
 void Program::handleEvents()
 {
     sf::Event event;
@@ -112,39 +135,8 @@ void Program::handleEvents()
         if (event.type == sf::Event::Closed)
         {
             window.close();
-            for(int i = 0; i < 4; i++)
-            {
-                if(threadPool[i].joinable())
-                    threadPool[i].detach();
-            }
         }
     }
-}
-
-bool allThreadsJoinable(std::vector<std::thread>& threadPool)
-{
-    for(int i = 0; i < threadPool.size(); i++)
-    {
-        if(!threadPool[i].joinable())
-            return false;
-    }
-    return true;
-}
-
-// bool Program::allThreadsDone()
-// {
-//     for(int i = 0; i < 2; i++)
-//     {
-//         if(!futures[i].get())
-//             return false;
-//     }
-//     return true;
-// }
-
-void Program::initializer(std::promise<bool>& promise, int i, bool desc)
-{
-    bool ret = sortingAlgorithm->sort(elemLists[i], desc);
-    promise.set_value(ret);
 }
 
 void Program::update()
@@ -159,7 +151,7 @@ void Program::update()
                                             | ImGuiWindowFlags_NoMove
                                             | ImGuiWindowFlags_NoResize);
 
-        if(ImGui::Button("Start", {60, 20}) && allThreadsJoinable(threadPool))
+        if(ImGui::Button("Start", {60, 20}) && threadPool.empty())
         {
             if(!shuffled)
             {
@@ -172,17 +164,20 @@ void Program::update()
 
             for(int i = 0; i < listNumber; i++)
             {
+                bool temp = (i % 2 == 0) ? descending : !descending;
+
                 std::promise<bool> promise;
                 std::future<bool> future = promise.get_future();
-                bool temp = (i % 2 == 0) ? descending : !descending;
-                threadPool.push_back(std::thread(&Program::initializer, this, std::ref(promises[i]), i, temp));
-                promises.push_back(std::move(promise));
+                std::thread thread(&Program::initializer, this, std::move(promise), i, temp);
+
+                threadPool.push_back(std::move(thread));
                 futures.push_back(std::move(future));
             }
+            shuffled = false;
         }
 
         ImGui::SameLine(0.f, 10.f);
-        if(ImGui::Button("Shuffle", {60, 20}) && !allThreadsJoinable(threadPool))
+        if(ImGui::Button("Shuffle", {60, 20}) && threadPool.empty())
         {
             shuffled = true;
             for(int i = 0; i < listNumber; i++)
@@ -214,21 +209,13 @@ void Program::update()
 
         draw();
 
-        // if(allThreadsDone() && allThreadsJoinable(threadPool))
-        // {
-        //     for(int i = 0; i < 2; i++)
-        //     {
-        //         threadPool[i].join();
-        //     }
-        //     shuffled = false;
-        //     std::cout << "Done" << std::endl;
-        // }
+
+        checkThreadProgress();
         
-        if(allThreadsJoinable(threadPool))
+        if(threadPool.empty())
             performActions();
     }
     ImGui::SFML::Shutdown();
-    destroyAlgorithmList();
 }
 
 void Program::draw()
