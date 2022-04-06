@@ -33,11 +33,22 @@ Program::Program()
         ElementList temp;
         elemLists.push_back(temp);
     }
-
     for(int i = 0; i < 4; i++)
     {
-        threadPool.emplace_back();
+        std::thread thread;
+        threadPool.push_back(std::move(thread));
     }
+    for(int i = 0; i < 4; i++)
+    {
+        std::promise<bool> promise;
+        promises.push_back(std::move(promise));
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        std::future<bool> future = promises[i].get_future();
+        futures.push_back(std::move(future));
+    }
+
     initializeLists(elemLists, listNumber);
     for(int i = 0; i < listNumber; i++)
     {
@@ -135,6 +146,22 @@ bool allThreadsJoinable(std::vector<std::thread>& threadPool)
     return true;
 }
 
+// bool Program::allThreadsDone()
+// {
+//     for(int i = 0; i < 2; i++)
+//     {
+//         if(!futures[i].get())
+//             return false;
+//     }
+//     return true;
+// }
+
+void Program::initializer(std::promise<bool>& promise, int i, bool desc)
+{
+    bool ret = sortingAlgorithm->sort(elemLists[i], desc);
+    promise.set_value(ret);
+}
+
 void Program::update()
 {
     while (window.isOpen())
@@ -161,8 +188,7 @@ void Program::update()
             for(int i = 0; i < 2; i++)
             {
                 bool temp = (i % 2 == 0) ? descending : !descending;
-                threadPool[i] = std::thread(&SortingAlgorithm::sort, sortingAlgorithm, 
-                    std::ref<ElementList>(elemLists[i]), temp);
+                threadPool[i] = std::thread(&Program::initializer, this, std::ref(promises[i]), i, temp);
             }
         }
 
@@ -199,15 +225,15 @@ void Program::update()
 
         draw();
 
-        if(sortingAlgorithm->isFinished() && allThreadsJoinable(threadPool))
-        {
-            for(int i = 0; i < 2; i++)
-            {
-                threadPool[i].join();
-            }
-            shuffled = false;
-            std::cout << "Done" << std::endl;
-        }
+        // if(allThreadsDone() && allThreadsJoinable(threadPool))
+        // {
+        //     for(int i = 0; i < 2; i++)
+        //     {
+        //         threadPool[i].join();
+        //     }
+        //     shuffled = false;
+        //     std::cout << "Done" << std::endl;
+        // }
         
         if(!allThreadsJoinable(threadPool))
             performActions();

@@ -14,12 +14,11 @@ typedef std::vector<Element> ElementList;
 class SortingAlgorithm
 {
 protected:
-    bool finished;
     int delay;
 public:
     SortingAlgorithm();
     virtual ~SortingAlgorithm() { }
-    virtual void sort(ElementList& elems, bool desc);
+    virtual bool sort(ElementList& elems, bool desc);
     bool isFinished();
     void setDelay(int delay);
 protected:
