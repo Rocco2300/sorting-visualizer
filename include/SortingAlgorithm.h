@@ -9,21 +9,19 @@ struct Element
     sf::Color color;
 };
 
+typedef std::vector<Element> ElementList;
+
 class SortingAlgorithm
 {
 protected:
     bool finished;
-    bool descending;
-    std::vector<Element>* elems;
     int delay;
 public:
-    SortingAlgorithm(std::vector<Element>& elems);
+    SortingAlgorithm();
     virtual ~SortingAlgorithm() { }
-    virtual void sort();
+    virtual void sort(ElementList& elems, bool desc);
     bool isFinished();
     void setDelay(int delay);
-    void setDescending(bool value);
 protected:
-    virtual void _sort() { }
-    bool compare(int a, int b);
+    virtual void _sort(ElementList& elems, bool desc) { }
 };

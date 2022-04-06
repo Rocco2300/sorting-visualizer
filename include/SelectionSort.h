@@ -5,7 +5,7 @@
 class SelectionSort : public SortingAlgorithm
 {
 public:
-    SelectionSort(std::vector<Element>& elems);
+    SelectionSort();
 private:
-    void _sort() override;
+    void _sort(ElementList& elems, bool desc) override;
 };

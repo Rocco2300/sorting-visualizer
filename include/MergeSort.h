@@ -5,9 +5,9 @@
 class MergeSort : public SortingAlgorithm
 {
 public:
-    MergeSort(std::vector<Element>& elems);
+    MergeSort();
 private:
-    void _sort() override;
-    void merge(int low, int mid, int high);
-    void mergeSort(int low, int high);
+    void _sort(ElementList& elems, bool desc) override;
+    void merge(ElementList& elems, int low, int mid, int high);
+    void mergeSort(ElementList& elems, int low, int high);
 };

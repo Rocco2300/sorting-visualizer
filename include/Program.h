@@ -10,7 +10,6 @@ enum Action
 {
     Resize,
     AlgorithmChange,
-    Descending
 };
 
 class Program
@@ -20,7 +19,8 @@ private:
     sf::Clock clock;
 
     std::thread thread;
-    std::vector<Element> elements;
+    std::thread thread1;
+    std::vector<ElementList> elemLists;
     std::stack<Action> actions;
 
     const char* algorithmIndexes[7];
@@ -29,6 +29,7 @@ private:
     
     int delay;
     int elementNo;
+    int listNumber;
     int currentItem;
     bool shuffled;
     bool descending;
@@ -40,7 +41,8 @@ public:
     void update();
     void performActions();
 private:
-    void initializeList();
+    void initializeList(ElementList& elements);
+    void initializeLists(std::vector<ElementList>& elemLists, int no);
     void handleEvents();
     void draw();
 };

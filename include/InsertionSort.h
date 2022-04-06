@@ -5,8 +5,8 @@
 class InsertionSort : public SortingAlgorithm
 {
 public:
-    InsertionSort(std::vector<Element>& elems);
+    InsertionSort();
 private:
-    void _sort() override;
+    void _sort(ElementList& elems, bool desc) override;
 };
 

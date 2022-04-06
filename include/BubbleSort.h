@@ -5,8 +5,10 @@
 class BubbleSort : public SortingAlgorithm
 {
 public:
-    BubbleSort(std::vector<Element>& elems);
+    BubbleSort();
 private:
-    void _sort() override;
+    void _sort(ElementList& elems, bool desc) override;
+    void bubbleSortAsc(ElementList& elems);
+    void bubbleSortDesc(ElementList& elems);
 };
 

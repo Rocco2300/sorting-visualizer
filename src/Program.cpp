@@ -27,15 +27,24 @@ Program::Program()
 
     delay = 5;
     elementNo = 1000;
-    initializeList();
-    std::random_shuffle(elements.begin(), elements.end());
+    listNumber = 2;
+    for(int i = 0; i < 4; i++)
+    {
+        ElementList temp;
+        elemLists.push_back(temp);
+    }
+    initializeLists(elemLists, listNumber);
+    for(int i = 0; i < listNumber; i++)
+    {
+        std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+    }
     shuffled = true;
     descending = false;
 
     currentItem = 0;
     buildAlgorithmList();
     // sortingAlgorithm = algorithmList[currentItem];
-    sortingAlgorithm = new BubbleSort(elements);
+    sortingAlgorithm = algorithmList[currentItem];
     sortingAlgorithm->setDelay(delay);
 }
 
@@ -53,13 +62,13 @@ void Program::buildAlgorithmList()
     algorithmIndexes[4] = "Quick Sort";
     algorithmIndexes[5] = "Count Sort";
     algorithmIndexes[6] = "Radix Sort";
-    algorithmList[0] = new BubbleSort(elements);
-    algorithmList[1] = new SelectionSort(elements);
-    algorithmList[2] = new InsertionSort(elements);
-    algorithmList[3] = new MergeSort(elements);
-    algorithmList[4] = new QuickSort(elements);
-    algorithmList[5] = new CountSort(elements);
-    algorithmList[6] = new RadixSort(elements);
+    algorithmList[0] = new BubbleSort();
+    algorithmList[1] = new SelectionSort();
+    algorithmList[2] = new InsertionSort();
+    algorithmList[3] = new MergeSort();
+    algorithmList[4] = new QuickSort();
+    algorithmList[5] = new CountSort();
+    algorithmList[6] = new RadixSort();
 }
 
 void Program::destroyAlgorithmList()
@@ -70,17 +79,25 @@ void Program::destroyAlgorithmList()
     }
 }
 
-void Program::initializeList()
+void Program::initializeList(ElementList& elems)
 {
-    elements.clear();
-    elements.reserve(elementNo);
+    elems.clear();
+    elems.reserve(elementNo);
     int height = WINDOW_HEIGHT - 200;
     for(int i = 0; i < elementNo; i++)
     {
         Element el;
         el.height = (height - 20) * ((i+1) / (float)elementNo);
         el.color = sf::Color::White;
-        elements.push_back(el);
+        elems.push_back(el);
+    }
+}
+
+void Program::initializeLists(std::vector<ElementList>& elemLists, int no)
+{
+    for(int i = 0; i < no; i++)
+    {
+        initializeList(elemLists[i]);
     }
 }
 
@@ -96,6 +113,9 @@ void Program::handleEvents()
             window.close();
             if(thread.joinable())
                 thread.detach();
+            
+            if(thread1.joinable())
+                thread1.detach();
         }
     }
 }
@@ -116,22 +136,26 @@ void Program::update()
         {
             if(!shuffled)
             {
-                std::random_shuffle(elements.begin(), elements.end());
+                for(int i = 0; i < listNumber; i++)
+                {
+                    std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+                }
                 shuffled = true;
             }
-            thread = std::thread(&SortingAlgorithm::sort, sortingAlgorithm);
+            thread = std::thread(&SortingAlgorithm::sort, sortingAlgorithm, 
+                std::ref<std::vector<Element>>(elemLists[0]), descending);
         }
         ImGui::SameLine(0.f, 10.f);
         if(ImGui::Button("Shuffle", {60, 20}) && !thread.joinable())
         {
             shuffled = true;
-            std::random_shuffle(elements.begin(), elements.end());
+            for(int i = 0; i < listNumber; i++)
+            {
+                std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+            }
         }
         ImGui::SameLine(0.f, 10.f);
-        if(ImGui::Checkbox("Descending", &descending))
-        {
-            actions.push(Action::Descending);
-        }
+        ImGui::Checkbox("Descending", &descending);
         ImGui::SameLine(500.f, 0.f);
         ImGui::PushItemWidth(200);
         if(ImGui::Combo("Algorithm", &currentItem, algorithmIndexes, 7))
@@ -154,7 +178,7 @@ void Program::update()
 
         draw();
 
-        if(sortingAlgorithm->isFinished() && thread.joinable())
+        if(sortingAlgorithm->isFinished() && thread.joinable() && thread1.joinable())
         {
             thread.join();
             shuffled = false;
@@ -165,20 +189,24 @@ void Program::update()
             performActions();
     }
     ImGui::SFML::Shutdown();
+    destroyAlgorithmList();
 }
 
 void Program::draw()
 {
     window.clear();
 
-    for(size_t i = 0; i < elements.size(); i++)
+    for(int list = 0; list < listNumber; list++)
     {
-        int elems = elements.size();
-        sf::RectangleShape temp({WINDOW_WIDTH / (float)elems, elements[i].height});
-        temp.setFillColor(elements[i].color);
-        temp.setOrigin({0, elements[i].height});
-        temp.setPosition({WINDOW_WIDTH / (float)elems * i, WINDOW_HEIGHT});
-        window.draw(temp);
+        for(size_t i = 0; i < elemLists[0].size(); i++)
+        {
+            int elems = elemLists[list].size();
+            sf::RectangleShape temp({(WINDOW_WIDTH / (float)elems) / listNumber, elemLists[list][i].height});
+            temp.setFillColor(elemLists[list][i].color);
+            temp.setOrigin({0, elemLists[list][i].height});
+            temp.setPosition({(WINDOW_WIDTH / (float)elems * i) / listNumber + list* WINDOW_WIDTH/listNumber, WINDOW_HEIGHT});
+            window.draw(temp);
+        }
     }
     ImGui::SFML::Render(window);
 
@@ -196,14 +224,14 @@ void Program::performActions()
         switch(action)
         {
         case Resize:
-            initializeList();
-            std::random_shuffle(elements.begin(), elements.end());
+            initializeLists(elemLists, listNumber);
+            for(int i = 0; i < listNumber; i++)
+            {
+                std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+            }
             break;
         case AlgorithmChange:
             sortingAlgorithm = algorithmList[currentItem];
-            break;
-        case Descending:
-            sortingAlgorithm->setDescending(descending);
             break;
         }
     }

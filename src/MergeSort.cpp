@@ -1,10 +1,10 @@
 #include "MergeSort.h"
 
-MergeSort::MergeSort(std::vector<Element>& elems) : SortingAlgorithm(elems)
+MergeSort::MergeSort()
 {
 }
 
-void MergeSort::merge(int low, int mid, int high)
+void MergeSort::merge(ElementList& elems, int low, int mid, int high)
 {
     int sizeOne = mid - low + 1;
     int sizeTwo = high - mid;
@@ -15,9 +15,9 @@ void MergeSort::merge(int low, int mid, int high)
     two.reserve(sizeTwo);
 
     for(int i = 0; i < sizeOne; i++)
-        one[i] = elems->at(low + i);
+        one[i] = elems.at(low + i);
     for(int j = 0; j < sizeTwo; j++)
-        two[j] = elems->at(mid + 1 + j);
+        two[j] = elems.at(mid + 1 + j);
 
     int i = 0,
         j = 0,
@@ -26,27 +26,27 @@ void MergeSort::merge(int low, int mid, int high)
     while(i < sizeOne && j < sizeTwo)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        if(compare(two[j].height, one[i].height))
-            elems->at(k++) = one[i++];
+        if(one[i].height < two[j].height)
+            elems.at(k++) = one[i++];
         else
-            elems->at(k++) = two[j++];
+            elems.at(k++) = two[j++];
     }
 
     while(i < sizeOne)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        elems->at(k++) = one[i++];
+        elems.at(k++) = one[i++];
     }
 
     while(j < sizeTwo)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
-        elems->at(k++) = two[j++];
+        elems.at(k++) = two[j++];
     }
 }
 
-void MergeSort::mergeSort(int low, int high)
+void MergeSort::mergeSort(ElementList& elems, int low, int high)
 {
     if(low >= high)
         return;
@@ -55,12 +55,12 @@ void MergeSort::mergeSort(int low, int high)
 
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
-    mergeSort(low, mid);
-    mergeSort(mid+1, high);
-    merge(low, mid, high);
+    mergeSort(elems, low, mid);
+    mergeSort(elems, mid+1, high);
+    merge(elems, low, mid, high);
 }
 
-void MergeSort::_sort()
+void MergeSort::_sort(ElementList& elems, bool desc)
 {
-    mergeSort(0, elems->size()-1);
+    mergeSort(elems, 0, elems.size()-1);
 }

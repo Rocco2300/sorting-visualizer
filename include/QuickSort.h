@@ -5,10 +5,10 @@
 class QuickSort : public SortingAlgorithm
 {
 public:
-    QuickSort(std::vector<Element>& elems);
+    QuickSort();
 private:
-    void _sort() override;
-    void quickSort(int low, int high);
-    int lomutoPartition(int low, int high);
-    int hoarePartition(int low, int high);
+    void _sort(ElementList& elems, bool desc) override;
+    void quickSort(ElementList& elems, int low, int high);
+    int lomutoPartition(ElementList& elems, int low, int high);
+    // int hoarePartition(int low, int high);
 };

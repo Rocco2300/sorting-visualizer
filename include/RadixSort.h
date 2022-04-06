@@ -6,10 +6,10 @@ class RadixSort : public SortingAlgorithm
 {
 private:
 public:
-    RadixSort(std::vector<Element>& elems);
-    void _sort() override;
+    RadixSort();
+    void _sort(ElementList& elems, bool desc) override;
 private:
-    int getMax();
-    void countSortAsc(int exp);
-    void countSortDesc(int exp);
+    int getMax(ElementList& elems);
+    void countSortAsc(ElementList& elems, int exp);
+    void countSortDesc(ElementList& elems, int exp);
 };
