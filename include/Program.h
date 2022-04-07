@@ -20,14 +20,11 @@ private:
     sf::Clock clock;
 
     std::vector<std::thread> threadPool;
-    // std::vector<std::promise<bool>> promises;
-    std::vector<std::future<bool>> futures;
+    std::vector<std::future<void>> futures;
     std::vector<ElementList> elemLists;
     std::stack<Action> actions;
 
-    const char* algorithmIndexes[7];
     SortingAlgorithm* sortingAlgorithm;
-    SortingAlgorithm* algorithmList[7];
     
     int delay;
     int elementNo;
@@ -38,12 +35,11 @@ private:
 public:
     Program();
     ~Program();
-    void buildAlgorithmList();
-    void destroyAlgorithmList();
     void update();
     void performActions();
 private:
-    void initializer(std::promise<bool>&& promise, int i, bool desc);
+    void destroyAlgorithmList(SortingAlgorithm* algoList[]);
+    void initializer(std::promise<void>&& promise, int i, bool desc);
     void checkThreadProgress();
     void initializeList(ElementList& elements);
     void initializeLists(std::vector<ElementList>& elemLists, int no);

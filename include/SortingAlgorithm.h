@@ -18,7 +18,7 @@ protected:
 public:
     SortingAlgorithm();
     virtual ~SortingAlgorithm() { }
-    virtual bool sort(ElementList& elems, bool desc);
+    virtual void sort(ElementList& elems, bool desc);
     bool isFinished();
     void setDelay(int delay);
 protected:

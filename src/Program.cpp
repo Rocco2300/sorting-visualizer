@@ -8,13 +8,7 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 
-#include "BubbleSort.h"
-#include "QuickSort.h"
-#include "MergeSort.h"
-#include "InsertionSort.h"
-#include "SelectionSort.h"
-#include "CountSort.h"
-#include "RadixSort.h"
+#include "Constants.h"
 
 Program::Program()
 {
@@ -28,7 +22,7 @@ Program::Program()
     delay = 5;
     elementNo = 1000;
     listNumber = 2;
-    for(int i = 0; i < 4; i++)
+    for(int i = 0; i < listNumber; i++)
     {
         ElementList temp;
         elemLists.push_back(temp);
@@ -43,40 +37,20 @@ Program::Program()
     descending = false;
 
     currentItem = 0;
-    buildAlgorithmList();
-    // sortingAlgorithm = algorithmList[currentItem];
     sortingAlgorithm = algorithmList[currentItem];
     sortingAlgorithm->setDelay(delay);
 }
 
 Program::~Program()
 {
-    destroyAlgorithmList();
+    destroyAlgorithmList(algorithmList);
 }
 
-void Program::buildAlgorithmList()
-{
-    algorithmIndexes[0] = "Bubble Sort";
-    algorithmIndexes[1] = "Selection Sort";
-    algorithmIndexes[2] = "Insertion Sort";
-    algorithmIndexes[3] = "Merge Sort";
-    algorithmIndexes[4] = "Quick Sort";
-    algorithmIndexes[5] = "Count Sort";
-    algorithmIndexes[6] = "Radix Sort";
-    algorithmList[0] = new BubbleSort();
-    algorithmList[1] = new SelectionSort();
-    algorithmList[2] = new InsertionSort();
-    algorithmList[3] = new MergeSort();
-    algorithmList[4] = new QuickSort();
-    algorithmList[5] = new CountSort();
-    algorithmList[6] = new RadixSort();
-}
-
-void Program::destroyAlgorithmList()
+void Program::destroyAlgorithmList(SortingAlgorithm* algoList[])
 {
     for(int i = 0; i < 7; i++)
     {
-        delete algorithmList[i];
+        delete algoList[i];
     }
 }
 
@@ -84,6 +58,7 @@ void Program::initializeList(ElementList& elems)
 {
     elems.clear();
     elems.reserve(elementNo);
+
     int height = WINDOW_HEIGHT - 200;
     for(int i = 0; i < elementNo; i++)
     {
@@ -108,21 +83,17 @@ void Program::checkThreadProgress()
     {
         if(futures[i].wait_for(std::chrono::seconds(0)) == std::future_status::ready)
         {
-            int ret = futures[i].get();
-            if(ret)
-            {
-                threadPool[i].join();
-                threadPool.erase(threadPool.begin() + i);
-                futures.erase(futures.begin() + i);
-            }
+            threadPool[i].join();
+            threadPool.erase(threadPool.begin() + i);
+            futures.erase(futures.begin() + i);
         }
     }
 }
 
-void Program::initializer(std::promise<bool>&& promise, int i, bool desc)
+void Program::initializer(std::promise<void>&& promise, int i, bool desc)
 {
-    bool ret = sortingAlgorithm->sort(elemLists[i], desc);
-    promise.set_value(ret);
+    sortingAlgorithm->sort(elemLists[i], desc);
+    promise.set_value();
 }
 
 void Program::handleEvents()
@@ -166,8 +137,8 @@ void Program::update()
             {
                 bool temp = (i % 2 == 0) ? descending : !descending;
 
-                std::promise<bool> promise;
-                std::future<bool> future = promise.get_future();
+                std::promise<void> promise;
+                std::future<void> future = promise.get_future();
                 std::thread thread(&Program::initializer, this, std::move(promise), i, temp);
 
                 threadPool.push_back(std::move(thread));
@@ -209,9 +180,7 @@ void Program::update()
 
         draw();
 
-
-        checkThreadProgress();
-        
+        checkThreadProgress();        
         if(threadPool.empty())
             performActions();
     }
@@ -224,13 +193,18 @@ void Program::draw()
 
     for(int list = 0; list < listNumber; list++)
     {
+        sf::RectangleShape temp;
         for(size_t i = 0; i < elemLists[0].size(); i++)
         {
             int elems = elemLists[list].size();
-            sf::RectangleShape temp({(WINDOW_WIDTH / (float)elems) / listNumber, elemLists[list][i].height});
+
+            temp.setSize({(WINDOW_WIDTH / (float)elems) / listNumber, elemLists[list][i].height});
             temp.setFillColor(elemLists[list][i].color);
             temp.setOrigin({0, elemLists[list][i].height});
-            temp.setPosition({(WINDOW_WIDTH / (float)elems * i) / listNumber + list* WINDOW_WIDTH/listNumber, WINDOW_HEIGHT});
+            
+            temp.setPosition((WINDOW_WIDTH / (float)elems * i) / listNumber + list* WINDOW_WIDTH/listNumber, 
+                WINDOW_HEIGHT /*- (WINDOW_HEIGHT  - elemLists[list][i].height) + 70*/);
+
             window.draw(temp);
         }
     }
