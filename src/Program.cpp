@@ -21,7 +21,7 @@ Program::Program()
 
     delay = 5;
     elementNo = 1000;
-    listNumber = 2;
+    listNumber = 4;
     for(int i = 0; i < listNumber; i++)
     {
         ElementList temp;
@@ -59,11 +59,11 @@ void Program::initializeList(ElementList& elems)
     elems.clear();
     elems.reserve(elementNo);
 
-    int height = WINDOW_HEIGHT - 200;
+    int height = (WINDOW_HEIGHT / 2) - 35;
     for(int i = 0; i < elementNo; i++)
     {
         Element el;
-        el.height = (height - 20) * ((i+1) / (float)elementNo);
+        el.height = height * ((i+1) / (float)elementNo);
         el.color = sf::Color::White;
         elems.push_back(el);
     }
@@ -198,12 +198,13 @@ void Program::draw()
         {
             int elems = elemLists[list].size();
 
-            temp.setSize({(WINDOW_WIDTH / (float)elems) / listNumber, elemLists[list][i].height});
+            temp.setSize({(WINDOW_WIDTH / (float)elems) / 2, elemLists[list][i].height});
             temp.setFillColor(elemLists[list][i].color);
             temp.setOrigin({0, elemLists[list][i].height});
             
-            temp.setPosition((WINDOW_WIDTH / (float)elems * i) / listNumber + list* WINDOW_WIDTH/listNumber, 
-                WINDOW_HEIGHT /*- (WINDOW_HEIGHT  - elemLists[list][i].height) + 70*/);
+            int aux[5] = {i, elems, elemLists[list][i].height, list, listNumber};
+            std::pair<float, float> pos = functions[1](aux);
+            temp.setPosition(pos.first, pos.second);
 
             window.draw(temp);
         }
