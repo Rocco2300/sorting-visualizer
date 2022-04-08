@@ -25,7 +25,13 @@ enum Settings
     TotalListNo
 };
 
+enum Pattern
+{
+    Normal = 0,
+    Diamond
+};
+
 extern const char* algorithmIndexes[7];
 extern SortingAlgorithm* algorithmList[7];
 // extern int settings[2][3];
-extern std::map<int, std::function<std::pair<float, float> (int[])>> functions;
+extern std::map<Pattern, std::function<std::pair<float, float> (int[])>> functions;

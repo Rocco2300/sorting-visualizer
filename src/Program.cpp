@@ -28,6 +28,8 @@ Program::Program()
         elemLists.push_back(temp);
     }
 
+    fpsTime = fpsClock.restart();
+
     initializeLists(elemLists, listNumber);
     for(int i = 0; i < listNumber; i++)
     {
@@ -114,9 +116,17 @@ void Program::update()
 {
     while (window.isOpen())
     {   
+        dt = clock.restart();
         handleEvents();
 
-        ImGui::SFML::Update(window, clock.restart());
+        fpsTime = fpsClock.getElapsedTime();
+        if(fpsTime.asSeconds() >= 2.f)
+        {
+            fpsTime = fpsClock.restart();
+            std::cout << 1.f/dt.asSeconds() << std::endl;
+        }
+
+        ImGui::SFML::Update(window, dt);
 
         ImGui::Begin("Hello, World!", NULL, ImGuiWindowFlags_NoTitleBar 
                                             | ImGuiWindowFlags_NoMove
@@ -202,8 +212,8 @@ void Program::draw()
             temp.setFillColor(elemLists[list][i].color);
             temp.setOrigin({0, elemLists[list][i].height});
             
-            int aux[5] = {i, elems, elemLists[list][i].height, list, listNumber};
-            std::pair<float, float> pos = functions[1](aux);
+            int aux[5] = {static_cast<int>(i), elems, static_cast<int>(elemLists[list][i].height), list, listNumber};
+            std::pair<float, float> pos = functions[Diamond](aux);
             temp.setPosition(pos.first, pos.second);
 
             window.draw(temp);

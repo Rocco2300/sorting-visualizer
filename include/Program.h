@@ -15,6 +15,9 @@ class Program
 private:
     sf::RenderWindow window;
     sf::Clock clock;
+    sf::Time dt;
+    sf::Clock fpsClock;
+    sf::Time fpsTime;
 
     std::vector<std::thread> threadPool;
     std::vector<std::future<void>> futures;

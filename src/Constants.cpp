@@ -25,22 +25,33 @@ SortingAlgorithm* algorithmList[7] =
     new RadixSort()
 };
 
-std::map<int, std::function<std::pair<float, float> (int[])>> functions
+std::map<Pattern, std::function<std::pair<float, float> (int[])>> functions
 {
-    {1, [](int settings[])
+    {
+        Pattern::Normal,
+        [](int settings[])
+        {
+            int i = settings[CurrentElem];
+            int elems = settings[ElementNo];
+
+            float x = (WINDOW_WIDTH / (float)elems * i);
+            float y = WINDOW_HEIGHT;
+
+            return std::make_pair(x, y);
+        }
+    },
+    {
+        Pattern::Diamond,
+        [](int settings[])
         {
             int i = settings[CurrentElem];
             int elems = settings[ElementNo];
             int height = settings[CurrentHeight];
             int list = settings[CurrentList];
-            int listNumber = settings[TotalListNo];
 
             int offsetX = list % 2;
             int offsetY = list / 2;
             
-            // int firstRowOffset = (offsetY == 0) ? 35 : 0;
-            // float x = (WINDOW_WIDTH / (float)elems * i);
-            // float y = WINDOW_HEIGHT - (WINDOW_HEIGHT - height) + 70;
             float x = (WINDOW_WIDTH / (float)elems * i) / 2 + offsetX * WINDOW_WIDTH / 2;
             float y = (offsetY == 0) ? (offsetY * WINDOW_HEIGHT / 2 + WINDOW_HEIGHT / 2) + 35
                                      : (WINDOW_HEIGHT - (WINDOW_HEIGHT - height)) + offsetY * WINDOW_HEIGHT / 2 + 35;
