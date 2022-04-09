@@ -3,6 +3,8 @@
 // const char* algorithmIndexes[7];
 // SortingAlgorithm algorithmList[7];
 
+namespace cv
+{
 const char* algorithmIndexes[7] =
 {
     "Bubble Sort",
@@ -79,6 +81,7 @@ std::map<Pattern, std::function<std::pair<float, float> (int[])>> functions
             return std::make_pair(x, y);
         }
     }
+};
 };
 
 //  float x = (WINDOW_WIDTH / (float)elems * i) / listNumber + list* WINDOW_WIDTH/listNumber;

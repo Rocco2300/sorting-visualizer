@@ -21,7 +21,7 @@ Program::Program()
     elementNo = 1000;
     currentPattern = 0;
     pattern = (Pattern)currentPattern;
-    listNumber = listNumberSettings[pattern];
+    listNumber = cv::listNumberSettings[pattern];
     for(int i = 0; i < listNumber; i++)
     {
         ElementList temp;
@@ -39,13 +39,13 @@ Program::Program()
     descending = false;
 
     currentAlgorithm = 0;
-    sortingAlgorithm = algorithmList[currentAlgorithm];
+    sortingAlgorithm = cv::algorithmList[currentAlgorithm];
     sortingAlgorithm->setDelay(delay);
 }
 
 Program::~Program()
 {
-    destroyAlgorithmList(algorithmList);
+    destroyAlgorithmList(cv::algorithmList);
 }
 
 void Program::destroyAlgorithmList(SortingAlgorithm* algoList[])
@@ -61,7 +61,7 @@ void Program::initializeList(ElementList& elems)
     elems.clear();
     elems.reserve(elementNo);
 
-    height = temporary[pattern][Height];
+    height = cv::temporary[pattern][Height];
     for(int i = 0; i < elementNo; i++)
     {
         Element el;
@@ -172,7 +172,7 @@ void Program::update()
         ImGui::Checkbox("Descending", &descending);
         ImGui::SameLine(500.f, 0.f);
         ImGui::PushItemWidth(200);
-        if(ImGui::Combo("Algorithm", &currentAlgorithm, algorithmIndexes, 7))
+        if(ImGui::Combo("Algorithm", &currentAlgorithm, cv::algorithmIndexes, 7))
         {
             actions.push(Action::AlgorithmChange);
         }
@@ -189,7 +189,7 @@ void Program::update()
         }
         ImGui::SameLine(0.f, 10.f);
         ImGui::PushItemWidth(200);
-        if(ImGui::Combo("Pattern", &currentPattern, patternIndexes, 2))
+        if(ImGui::Combo("Pattern", &currentPattern, cv::patternIndexes, 2))
         {
             actions.push(Action::PatternChange);
         }
@@ -216,12 +216,12 @@ void Program::draw()
         {
             int elems = elemLists[list].size();
 
-            temp.setSize({(WINDOW_WIDTH / (float)elems) / temporary[pattern][Divide], elemLists[list][i].height});
+            temp.setSize({(WINDOW_WIDTH / (float)elems) / cv::temporary[pattern][Divide], elemLists[list][i].height});
             temp.setFillColor(elemLists[list][i].color);
             temp.setOrigin({0, elemLists[list][i].height});
             
             int aux[5] = {static_cast<int>(i), elems, static_cast<int>(elemLists[list][i].height), list, listNumber};
-            std::pair<float, float> pos = functions[pattern](aux);
+            std::pair<float, float> pos = cv::functions[pattern](aux);
             temp.setPosition(pos.first, pos.second);
 
             window.draw(temp);
@@ -250,12 +250,12 @@ void Program::performActions()
             }
             break;
         case AlgorithmChange:
-            sortingAlgorithm = algorithmList[currentAlgorithm];
+            sortingAlgorithm = cv::algorithmList[currentAlgorithm];
             break;
         case PatternChange:
             pattern = (Pattern)currentPattern;
-            listNumber = listNumberSettings[pattern];
-            height = temporary[pattern][Height];
+            listNumber = cv::listNumberSettings[pattern];
+            height = cv::temporary[pattern][Height];
             initializeLists(listNumber);
             for(int i = 0; i < listNumber; i++)
             {
