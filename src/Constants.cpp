@@ -14,6 +14,12 @@ const char* algorithmIndexes[7] =
     "Radix Sort"
 };
 
+const char* patternIndexes[2] = 
+{
+    "Normal",
+    "Diamond"
+};
+
 SortingAlgorithm* algorithmList[7] = 
 {
     new BubbleSort(),
@@ -24,6 +30,10 @@ SortingAlgorithm* algorithmList[7] =
     new CountSort(),
     new RadixSort()
 };
+
+const int listNumberSettings[2] = { 1, 4 };
+
+const int heights[2] = { WINDOW_HEIGHT - 200, (WINDOW_HEIGHT / 2) - 35 };
 
 std::map<Pattern, std::function<std::pair<float, float> (int[])>> functions
 {

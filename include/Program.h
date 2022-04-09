@@ -2,12 +2,14 @@
 #include <string>
 #include <stack>
 #include <future>
-#include "SortingAlgorithm.h"
+
+#include "Constants.h"
 
 enum Action
 {
     Resize,
     AlgorithmChange,
+    PatternChange
 };
 
 class Program
@@ -25,11 +27,15 @@ private:
     std::stack<Action> actions;
 
     SortingAlgorithm* sortingAlgorithm;
+    Pattern pattern;
     
+    int currentAlgorithm;
+    int currentPattern;
+    int height;
+
     int delay;
     int elementNo;
     int listNumber;
-    int currentItem;
     bool shuffled;
     bool descending;
 public:
@@ -42,7 +48,7 @@ private:
     void initializer(std::promise<void>&& promise, int i, bool desc);
     void checkThreadProgress();
     void initializeList(ElementList& elements);
-    void initializeLists(std::vector<ElementList>& elemLists, int no);
+    void initializeLists(int no);
     void handleEvents();
     void draw();
 };

@@ -8,8 +8,6 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 
-#include "Constants.h"
-
 Program::Program()
 {
     srand(time(NULL));
@@ -21,7 +19,9 @@ Program::Program()
 
     delay = 5;
     elementNo = 1000;
-    listNumber = 4;
+    currentPattern = 0;
+    pattern = (Pattern)currentPattern;
+    listNumber = listNumberSettings[pattern];
     for(int i = 0; i < listNumber; i++)
     {
         ElementList temp;
@@ -30,7 +30,7 @@ Program::Program()
 
     fpsTime = fpsClock.restart();
 
-    initializeLists(elemLists, listNumber);
+    initializeLists(listNumber);
     for(int i = 0; i < listNumber; i++)
     {
         std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
@@ -38,8 +38,8 @@ Program::Program()
     shuffled = true;
     descending = false;
 
-    currentItem = 0;
-    sortingAlgorithm = algorithmList[currentItem];
+    currentAlgorithm = 0;
+    sortingAlgorithm = algorithmList[currentAlgorithm];
     sortingAlgorithm->setDelay(delay);
 }
 
@@ -61,7 +61,7 @@ void Program::initializeList(ElementList& elems)
     elems.clear();
     elems.reserve(elementNo);
 
-    int height = (WINDOW_HEIGHT / 2) - 35;
+    height = heights[pattern];
     for(int i = 0; i < elementNo; i++)
     {
         Element el;
@@ -71,8 +71,10 @@ void Program::initializeList(ElementList& elems)
     }
 }
 
-void Program::initializeLists(std::vector<ElementList>& elemLists, int no)
+void Program::initializeLists(int no)
 {
+    elemLists.clear();
+    elemLists.reserve(no);
     for(int i = 0; i < no; i++)
     {
         initializeList(elemLists[i]);
@@ -170,7 +172,7 @@ void Program::update()
         ImGui::Checkbox("Descending", &descending);
         ImGui::SameLine(500.f, 0.f);
         ImGui::PushItemWidth(200);
-        if(ImGui::Combo("Algorithm", &currentItem, algorithmIndexes, 7))
+        if(ImGui::Combo("Algorithm", &currentAlgorithm, algorithmIndexes, 7))
         {
             actions.push(Action::AlgorithmChange);
         }
@@ -184,6 +186,12 @@ void Program::update()
         if(ImGui::SliderInt("Delay", &delay, 1, 125))
         {
             sortingAlgorithm->setDelay(delay);
+        }
+        ImGui::SameLine(0.f, 10.f);
+        ImGui::PushItemWidth(200);
+        if(ImGui::Combo("Pattern", &currentPattern, patternIndexes, 2))
+        {
+            actions.push(Action::PatternChange);
         }
         ImGui::PopItemWidth();
         ImGui::End();
@@ -208,12 +216,12 @@ void Program::draw()
         {
             int elems = elemLists[list].size();
 
-            temp.setSize({(WINDOW_WIDTH / (float)elems) / 2, elemLists[list][i].height});
+            temp.setSize({(WINDOW_WIDTH / (float)elems), elemLists[list][i].height});
             temp.setFillColor(elemLists[list][i].color);
             temp.setOrigin({0, elemLists[list][i].height});
             
             int aux[5] = {static_cast<int>(i), elems, static_cast<int>(elemLists[list][i].height), list, listNumber};
-            std::pair<float, float> pos = functions[Diamond](aux);
+            std::pair<float, float> pos = functions[pattern](aux);
             temp.setPosition(pos.first, pos.second);
 
             window.draw(temp);
@@ -235,14 +243,24 @@ void Program::performActions()
         switch(action)
         {
         case Resize:
-            initializeLists(elemLists, listNumber);
+            initializeLists(listNumber);
             for(int i = 0; i < listNumber; i++)
             {
                 std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
             }
             break;
         case AlgorithmChange:
-            sortingAlgorithm = algorithmList[currentItem];
+            sortingAlgorithm = algorithmList[currentAlgorithm];
+            break;
+        case PatternChange:
+            pattern = (Pattern)currentPattern;
+            listNumber = listNumberSettings[pattern];
+            height = heights[pattern];
+            initializeLists(listNumber);
+            for(int i = 0; i < listNumber; i++)
+            {
+                std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+            }
             break;
         }
     }

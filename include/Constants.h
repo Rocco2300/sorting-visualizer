@@ -16,7 +16,7 @@
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
-enum Settings
+enum Params
 {
     CurrentElem = 0,
     ElementNo,
@@ -32,6 +32,8 @@ enum Pattern
 };
 
 extern const char* algorithmIndexes[7];
+extern const char* patternIndexes[2];
 extern SortingAlgorithm* algorithmList[7];
-// extern int settings[2][3];
+extern const int listNumberSettings[2];
+extern const int heights[2];
 extern std::map<Pattern, std::function<std::pair<float, float> (int[])>> functions;
