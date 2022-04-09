@@ -33,7 +33,17 @@ SortingAlgorithm* algorithmList[7] =
 
 const int listNumberSettings[2] = { 1, 4 };
 
-const int heights[2] = { WINDOW_HEIGHT - 200, (WINDOW_HEIGHT / 2) - 35 };
+const int temporary[2][2] = 
+{ 
+    {
+        WINDOW_HEIGHT - 200,
+        1
+    },
+    {
+        (WINDOW_HEIGHT / 2) - 35,
+        2
+    }
+};
 
 std::map<Pattern, std::function<std::pair<float, float> (int[])>> functions
 {

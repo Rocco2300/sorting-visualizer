@@ -61,7 +61,7 @@ void Program::initializeList(ElementList& elems)
     elems.clear();
     elems.reserve(elementNo);
 
-    height = heights[pattern];
+    height = temporary[pattern][Height];
     for(int i = 0; i < elementNo; i++)
     {
         Element el;
@@ -216,7 +216,7 @@ void Program::draw()
         {
             int elems = elemLists[list].size();
 
-            temp.setSize({(WINDOW_WIDTH / (float)elems), elemLists[list][i].height});
+            temp.setSize({(WINDOW_WIDTH / (float)elems) / temporary[pattern][Divide], elemLists[list][i].height});
             temp.setFillColor(elemLists[list][i].color);
             temp.setOrigin({0, elemLists[list][i].height});
             
@@ -255,7 +255,7 @@ void Program::performActions()
         case PatternChange:
             pattern = (Pattern)currentPattern;
             listNumber = listNumberSettings[pattern];
-            height = heights[pattern];
+            height = temporary[pattern][Height];
             initializeLists(listNumber);
             for(int i = 0; i < listNumber; i++)
             {
