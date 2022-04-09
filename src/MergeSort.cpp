@@ -4,7 +4,15 @@ MergeSort::MergeSort()
 {
 }
 
-void MergeSort::merge(ElementList& elems, int low, int mid, int high)
+bool MergeSort::compare(int a, int b, bool desc)
+{
+    if(!desc)
+        return a < b;
+    else
+        return a > b;
+}
+
+void MergeSort::merge(ElementList& elems, int low, int mid, int high, bool desc)
 {
     int sizeOne = mid - low + 1;
     int sizeTwo = high - mid;
@@ -26,7 +34,7 @@ void MergeSort::merge(ElementList& elems, int low, int mid, int high)
     while(i < sizeOne && j < sizeTwo)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        if(one[i].height < two[j].height)
+        if(compare(one[i].height, two[j].height, desc))
             elems.at(k++) = one[i++];
         else
             elems.at(k++) = two[j++];
@@ -46,7 +54,7 @@ void MergeSort::merge(ElementList& elems, int low, int mid, int high)
     }
 }
 
-void MergeSort::mergeSort(ElementList& elems, int low, int high)
+void MergeSort::mergeSort(ElementList& elems, int low, int high, bool desc)
 {
     if(low >= high)
         return;
@@ -55,12 +63,12 @@ void MergeSort::mergeSort(ElementList& elems, int low, int high)
 
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
-    mergeSort(elems, low, mid);
-    mergeSort(elems, mid+1, high);
-    merge(elems, low, mid, high);
+    mergeSort(elems, low, mid, desc);
+    mergeSort(elems, mid+1, high, desc);
+    merge(elems, low, mid, high, desc);
 }
 
 void MergeSort::_sort(ElementList& elems, bool desc)
 {
-    mergeSort(elems, 0, elems.size()-1);
+    mergeSort(elems, 0, elems.size()-1, desc);
 }
