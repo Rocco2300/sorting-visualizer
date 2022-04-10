@@ -189,7 +189,7 @@ void Program::update()
         }
         ImGui::SameLine(0.f, 10.f);
         ImGui::PushItemWidth(200);
-        if(ImGui::Combo("Pattern", &currentPattern, cv::patternIndexes, 2))
+        if(ImGui::Combo("Pattern", &currentPattern, cv::patternIndexes, 3))
         {
             actions.push(Action::PatternChange);
         }

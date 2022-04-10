@@ -16,9 +16,10 @@ const char* algorithmIndexes[7] =
     "Radix Sort"
 };
 
-const char* patternIndexes[2] = 
+const char* patternIndexes[3] = 
 {
     "Normal",
+    "Pyramid",
     "Diamond"
 };
 
@@ -33,13 +34,17 @@ SortingAlgorithm* algorithmList[7] =
     new RadixSort()
 };
 
-const int listNumberSettings[2] = { 1, 4 };
+const int listNumberSettings[3] = { 1, 2, 4 };
 
-const int temporary[2][2] = 
+const int temporary[3][2] = 
 { 
     {
         WINDOW_HEIGHT - 200,
         1
+    },
+    {
+        WINDOW_HEIGHT - 200,
+        2
     },
     {
         (WINDOW_HEIGHT / 2) - 35,
@@ -57,6 +62,20 @@ std::map<Pattern, std::function<std::pair<float, float> (int[])>> functions
             int elems = settings[ElementNo];
 
             float x = (WINDOW_WIDTH / (float)elems * i);
+            float y = WINDOW_HEIGHT;
+
+            return std::make_pair(x, y);
+        }
+    },
+    {
+        Pattern::Pyramid,
+        [](int settings[])
+        {
+            int i = settings[CurrentElem];
+            int elems = settings[ElementNo];
+            int list = settings[CurrentList];
+
+            float x = (WINDOW_WIDTH / (float)elems * i) / 2 + list * WINDOW_WIDTH / 2;
             float y = WINDOW_HEIGHT;
 
             return std::make_pair(x, y);

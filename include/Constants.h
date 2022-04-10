@@ -29,6 +29,7 @@ enum Params
 enum Pattern
 {
     Normal = 0,
+    Pyramid,
     Diamond
 };
 
@@ -41,9 +42,9 @@ enum Temp
 namespace cv
 {
 extern const char* algorithmIndexes[7];
-extern const char* patternIndexes[2];
+extern const char* patternIndexes[3];
 extern SortingAlgorithm* algorithmList[7];
-extern const int listNumberSettings[2];
-extern const int temporary[2][2];
+extern const int listNumberSettings[3];
+extern const int temporary[3][2];
 extern std::map<Pattern, std::function<std::pair<float, float> (int[])>> functions;
 };
