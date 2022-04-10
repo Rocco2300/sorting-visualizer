@@ -70,13 +70,23 @@ std::map<Pattern, std::function<std::pair<float, float> (int[])>> functions
             int elems = settings[ElementNo];
             int height = settings[CurrentHeight];
             int list = settings[CurrentList];
+            int desc = settings[Descending];
 
             int offsetX = list % 2;
             int offsetY = list / 2;
             
             float x = (WINDOW_WIDTH / (float)elems * i) / 2 + offsetX * WINDOW_WIDTH / 2;
-            float y = (offsetY == 0) ? (offsetY * WINDOW_HEIGHT / 2 + WINDOW_HEIGHT / 2) + 35
+            float y;
+            if(!desc)
+            {
+                y = (offsetY == 0) ? (offsetY * WINDOW_HEIGHT / 2 + WINDOW_HEIGHT / 2) + 35
                                      : (WINDOW_HEIGHT - (WINDOW_HEIGHT - height)) + offsetY * WINDOW_HEIGHT / 2 + 35;
+            }
+            else
+            {
+                y = (offsetY == 0) ? (WINDOW_HEIGHT - (WINDOW_HEIGHT - height)) + offsetY * WINDOW_HEIGHT / 2 + 70
+                                     : (offsetY * WINDOW_HEIGHT / 2 + WINDOW_HEIGHT / 2);
+            }
 
             return std::make_pair(x, y);
         }

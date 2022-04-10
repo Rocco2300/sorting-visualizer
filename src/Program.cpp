@@ -220,7 +220,7 @@ void Program::draw()
             temp.setFillColor(elemLists[list][i].color);
             temp.setOrigin({0, elemLists[list][i].height});
             
-            int aux[5] = {static_cast<int>(i), elems, static_cast<int>(elemLists[list][i].height), list, listNumber};
+            int aux[6] = {static_cast<int>(i), elems, static_cast<int>(elemLists[list][i].height), list, listNumber, (int)descending};
             std::pair<float, float> pos = cv::functions[pattern](aux);
             temp.setPosition(pos.first, pos.second);
 

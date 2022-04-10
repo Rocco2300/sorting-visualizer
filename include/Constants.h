@@ -22,7 +22,8 @@ enum Params
     ElementNo,
     CurrentHeight,
     CurrentList,
-    TotalListNo
+    TotalListNo,
+    Descending
 };
 
 enum Pattern
