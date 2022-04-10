@@ -20,17 +20,14 @@ Program::Program()
     delay = 5;
     elementNo = 1000;
     currentPattern = 0;
-    pattern = (Pattern)currentPattern;
-    listNumber = cv::listNumberSettings[pattern];
-    for(int i = 0; i < listNumber; i++)
-    {
-        ElementList temp;
-        elemLists.push_back(temp);
-    }
+
+    pattern = new NormalPattern(elemLists);
+    pattern->setElements(elementNo);
+    listNumber = pattern->getListNumber();
+    pattern->initializeLists();
 
     fpsTime = fpsClock.restart();
 
-    initializeLists(listNumber);
     for(int i = 0; i < listNumber; i++)
     {
         std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
@@ -56,30 +53,30 @@ void Program::destroyAlgorithmList(SortingAlgorithm* algoList[])
     }
 }
 
-void Program::initializeList(ElementList& elems)
-{
-    elems.clear();
-    elems.reserve(elementNo);
+// void Program::initializeList(ElementList& elems)
+// {
+//     elems.clear();
+//     elems.reserve(elementNo);
 
-    height = cv::temporary[pattern][Height];
-    for(int i = 0; i < elementNo; i++)
-    {
-        Element el;
-        el.height = height * ((i+1) / (float)elementNo);
-        el.color = sf::Color::White;
-        elems.push_back(el);
-    }
-}
+//     height = cv::temporary[pattern][Height];
+//     for(int i = 0; i < elementNo; i++)
+//     {
+//         Element el;
+//         el.height = height * ((i+1) / (float)elementNo);
+//         el.color = sf::Color::White;
+//         elems.push_back(el);
+//     }
+// }
 
-void Program::initializeLists(int no)
-{
-    elemLists.clear();
-    elemLists.reserve(no);
-    for(int i = 0; i < no; i++)
-    {
-        initializeList(elemLists[i]);
-    }
-}
+// void Program::initializeLists(int no)
+// {
+//     elemLists.clear();
+//     elemLists.reserve(no);
+//     for(int i = 0; i < no; i++)
+//     {
+//         initializeList(elemLists[i]);
+//     }
+// }
 
 void Program::checkThreadProgress()
 {
@@ -209,24 +206,7 @@ void Program::draw()
 {
     window.clear();
 
-    for(int list = 0; list < listNumber; list++)
-    {
-        sf::RectangleShape temp;
-        for(size_t i = 0; i < elemLists[0].size(); i++)
-        {
-            int elems = elemLists[list].size();
-
-            temp.setSize({(WINDOW_WIDTH / (float)elems) / cv::temporary[pattern][Divide], elemLists[list][i].height});
-            temp.setFillColor(elemLists[list][i].color);
-            temp.setOrigin({0, elemLists[list][i].height});
-            
-            int aux[6] = {static_cast<int>(i), elems, static_cast<int>(elemLists[list][i].height), list, listNumber, (int)descending};
-            std::pair<float, float> pos = cv::functions[pattern](aux);
-            temp.setPosition(pos.first, pos.second);
-
-            window.draw(temp);
-        }
-    }
+    window.draw(*pattern);
     ImGui::SFML::Render(window);
 
     window.display();
@@ -243,7 +223,8 @@ void Program::performActions()
         switch(action)
         {
         case Resize:
-            initializeLists(listNumber);
+            pattern->setElements(elementNo);
+            pattern->initializeLists();
             for(int i = 0; i < listNumber; i++)
             {
                 std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
@@ -252,16 +233,16 @@ void Program::performActions()
         case AlgorithmChange:
             sortingAlgorithm = cv::algorithmList[currentAlgorithm];
             break;
-        case PatternChange:
-            pattern = (Pattern)currentPattern;
-            listNumber = cv::listNumberSettings[pattern];
-            height = cv::temporary[pattern][Height];
-            initializeLists(listNumber);
-            for(int i = 0; i < listNumber; i++)
-            {
-                std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
-            }
-            break;
+        // case PatternChange:
+
+        //     listNumber = cv::listNumberSettings[pattern];
+        //     height = cv::temporary[pattern][Height];
+        //     initializeLists(listNumber);
+        //     for(int i = 0; i < listNumber; i++)
+        //     {
+        //         std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+        //     }
+        //     break;
         }
     }
 }
