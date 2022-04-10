@@ -3,7 +3,7 @@
 #include <stack>
 #include <future>
 
-#include "NormalPattern.h"
+#include "Constants.h"
 
 enum Action
 {
@@ -40,15 +40,11 @@ private:
     bool descending;
 public:
     Program();
-    ~Program();
     void update();
-    void performActions();
 private:
-    void destroyAlgorithmList(SortingAlgorithm* algoList[]);
     void initializer(std::promise<void>&& promise, int i, bool desc);
     void checkThreadProgress();
-    // void initializeList(ElementList& elements);
-    // void initializeLists(int no);
     void handleEvents();
     void draw();
+    void performActions();
 };

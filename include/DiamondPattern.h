@@ -2,11 +2,10 @@
 
 #include "Pattern.h"
 
-class NormalPattern : public Pattern
+class DiamondPattern : public Pattern
 {
 public:
-    NormalPattern();
+    DiamondPattern();
     void initializeLists(std::vector<ElementList>& elLists, int& elems, bool& desc);
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
-

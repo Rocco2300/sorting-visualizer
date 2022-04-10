@@ -20,63 +20,24 @@ Program::Program()
     delay = 5;
     elementNo = 1000;
     currentPattern = 0;
+    shuffled = true;
+    descending = false;
 
-    pattern = new NormalPattern(elemLists);
-    pattern->setElements(elementNo);
+    pattern = cv::patternList[currentPattern];
     listNumber = pattern->getListNumber();
-    pattern->initializeLists();
-
-    fpsTime = fpsClock.restart();
+    pattern->initializeLists(elemLists, elementNo, descending);
 
     for(int i = 0; i < listNumber; i++)
     {
         std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
     }
-    shuffled = true;
-    descending = false;
+
+    fpsTime = fpsClock.restart();
 
     currentAlgorithm = 0;
     sortingAlgorithm = cv::algorithmList[currentAlgorithm];
-    sortingAlgorithm->setDelay(delay);
+    sortingAlgorithm->setDelay(delay); 
 }
-
-Program::~Program()
-{
-    destroyAlgorithmList(cv::algorithmList);
-}
-
-void Program::destroyAlgorithmList(SortingAlgorithm* algoList[])
-{
-    for(int i = 0; i < 7; i++)
-    {
-        delete algoList[i];
-    }
-}
-
-// void Program::initializeList(ElementList& elems)
-// {
-//     elems.clear();
-//     elems.reserve(elementNo);
-
-//     height = cv::temporary[pattern][Height];
-//     for(int i = 0; i < elementNo; i++)
-//     {
-//         Element el;
-//         el.height = height * ((i+1) / (float)elementNo);
-//         el.color = sf::Color::White;
-//         elems.push_back(el);
-//     }
-// }
-
-// void Program::initializeLists(int no)
-// {
-//     elemLists.clear();
-//     elemLists.reserve(no);
-//     for(int i = 0; i < no; i++)
-//     {
-//         initializeList(elemLists[i]);
-//     }
-// }
 
 void Program::checkThreadProgress()
 {
@@ -223,8 +184,7 @@ void Program::performActions()
         switch(action)
         {
         case Resize:
-            pattern->setElements(elementNo);
-            pattern->initializeLists();
+            pattern->initializeLists(elemLists, elementNo, descending);
             for(int i = 0; i < listNumber; i++)
             {
                 std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
@@ -233,16 +193,15 @@ void Program::performActions()
         case AlgorithmChange:
             sortingAlgorithm = cv::algorithmList[currentAlgorithm];
             break;
-        // case PatternChange:
-
-        //     listNumber = cv::listNumberSettings[pattern];
-        //     height = cv::temporary[pattern][Height];
-        //     initializeLists(listNumber);
-        //     for(int i = 0; i < listNumber; i++)
-        //     {
-        //         std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
-        //     }
-        //     break;
+        case PatternChange:
+            pattern = cv::patternList[currentPattern];
+            listNumber = pattern->getListNumber();
+            pattern->initializeLists(elemLists, elementNo, descending);
+            for(int i = 0; i < listNumber; i++)
+            {
+                std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+            }
+            break;
         }
     }
 }

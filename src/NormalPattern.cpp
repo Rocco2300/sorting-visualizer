@@ -1,17 +1,25 @@
 #include "NormalPattern.h"
 
+#include "Constants.h"
 
-#include <iostream>
-
-NormalPattern::NormalPattern(std::vector<ElementList>& elemLists)
+NormalPattern::NormalPattern()
 {
     this->listNumber = 1;
-    std::cout << listNumber << std::endl;
-    this->elemLists = &elemLists;
+    this->elements = nullptr;
+    this->elemLists = nullptr;
 }
 
-void NormalPattern::initializeLists()
+void NormalPattern::initializeLists(std::vector<ElementList>& elLists, int& elems, bool& desc)
 {
+    if(!elements)
+        elements = &elems;
+    
+    if(!elemLists)
+        elemLists = &elLists;
+
+    if(!descending)
+        descending = &desc;
+
     elemLists->clear();
     elemLists->reserve(listNumber);
 
@@ -37,7 +45,7 @@ void NormalPattern::draw(sf::RenderTarget& target, sf::RenderStates states) cons
     for(int list = 0; list < listNumber; list++)
     {
         sf::RectangleShape temp;
-        for(size_t i = 0; i < *elements; i++)
+        for(int i = 0; i < *elements; i++)
         {
             temp.setSize({(WINDOW_WIDTH / (float)*elements), elemLists->at(list)[i].height});
             temp.setFillColor(elemLists->at(list)[i].color);
