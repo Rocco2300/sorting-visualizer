@@ -1,5 +1,6 @@
 #include "DiamondPattern.h"
 
+#include <cmath>
 #include "Constants.h"
 
 DiamondPattern::DiamondPattern()

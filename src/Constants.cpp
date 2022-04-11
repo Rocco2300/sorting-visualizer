@@ -34,7 +34,7 @@ const char* patternIndexes[3] =
 Pattern* patternList[3] =
 {
     new NormalPattern(),
-    nullptr,
+    new PyramidPattern(),
     new DiamondPattern()
 };
 

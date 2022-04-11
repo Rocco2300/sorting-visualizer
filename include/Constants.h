@@ -12,6 +12,7 @@
 #include "RadixSort.h"
 
 #include "NormalPattern.h"
+#include "PyramidPattern.h"
 #include "DiamondPattern.h"
 
 // Constant variables
