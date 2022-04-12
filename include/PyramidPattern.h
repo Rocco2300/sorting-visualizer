@@ -6,7 +6,7 @@ class PyramidPattern : public Pattern
 {
 public:
     PyramidPattern();
-    void initializeLists(std::vector<ElementList>& elLists, int& elems, bool& desc);
+    void initializeLists();
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 

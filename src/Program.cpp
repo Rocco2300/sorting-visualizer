@@ -25,7 +25,9 @@ Program::Program()
 
     pattern = cv::patternList[currentPattern];
     listNumber = pattern->getListNumber();
-    pattern->initializeLists(elemLists, elementNo, descending);
+    pattern->setPointers(elemLists, elementNo);
+    pattern->setDescending(descending);
+    pattern->initializeLists();
 
     for(int i = 0; i < listNumber; i++)
     {
@@ -94,6 +96,8 @@ void Program::update()
 
         if(ImGui::Button("Start", {60, 20}) && threadPool.empty())
         {
+            pattern->setDescending(descending);
+
             if(!shuffled)
             {
                 for(int i = 0; i < listNumber; i++)
@@ -184,7 +188,8 @@ void Program::performActions()
         switch(action)
         {
         case Resize:
-            pattern->initializeLists(elemLists, elementNo, descending);
+            pattern->setDescending(descending);
+            pattern->initializeLists();
             for(int i = 0; i < listNumber; i++)
             {
                 std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
@@ -196,7 +201,9 @@ void Program::performActions()
         case PatternChange:
             pattern = cv::patternList[currentPattern];
             listNumber = pattern->getListNumber();
-            pattern->initializeLists(elemLists, elementNo, descending);
+            pattern->setPointers(elemLists, elementNo);
+            pattern->setDescending(descending);
+            pattern->initializeLists();
             for(int i = 0; i < listNumber; i++)
             {
                 std::random_shuffle(elemLists[i].begin(), elemLists[i].end());

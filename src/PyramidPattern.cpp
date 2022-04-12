@@ -9,17 +9,8 @@ PyramidPattern::PyramidPattern()
     this->elemLists = nullptr;
 }
 
-void PyramidPattern::initializeLists(std::vector<ElementList>& elLists, int& elems, bool& desc)
+void PyramidPattern::initializeLists()
 {
-    if(!elements)
-        elements = &elems;
-    
-    if(!elemLists)
-        elemLists = &elLists;
-
-    if(!descending)
-        descending = &desc;
-
     elemLists->clear();
     elemLists->reserve(listNumber);
 

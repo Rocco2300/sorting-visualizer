@@ -9,17 +9,8 @@ NormalPattern::NormalPattern()
     this->elemLists = nullptr;
 }
 
-void NormalPattern::initializeLists(std::vector<ElementList>& elLists, int& elems, bool& desc)
+void NormalPattern::initializeLists()
 {
-    if(!elements)
-        elements = &elems;
-    
-    if(!elemLists)
-        elemLists = &elLists;
-
-    if(!descending)
-        descending = &desc;
-
     elemLists->clear();
     elemLists->reserve(listNumber);
 

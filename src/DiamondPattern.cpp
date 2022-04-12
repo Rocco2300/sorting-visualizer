@@ -1,6 +1,7 @@
 #include "DiamondPattern.h"
 
 #include <cmath>
+#include <iostream>
 #include "Constants.h"
 
 DiamondPattern::DiamondPattern()
@@ -10,17 +11,8 @@ DiamondPattern::DiamondPattern()
     this->elemLists = nullptr;
 }
 
-void DiamondPattern::initializeLists(std::vector<ElementList>& elLists, int& elems, bool& desc)
+void DiamondPattern::initializeLists()
 {
-    if(!elements)
-        elements = &elems;
-    
-    if(!elemLists)
-        elemLists = &elLists;
-    
-    if(!descending)
-        descending = &desc;
-
     elemLists->clear();
     elemLists->reserve(listNumber);
 
@@ -58,7 +50,7 @@ void DiamondPattern::draw(sf::RenderTarget& target, sf::RenderStates states) con
             
             float x = (WINDOW_WIDTH / (float)*elements * i) / 2 + offsetX * WINDOW_WIDTH / 2;
             float y;
-            if(!*descending)
+            if(!descending)
             {
                 y = (offsetY == 0) ? (offsetY * WINDOW_HEIGHT / 2 + WINDOW_HEIGHT / 2) + 35
                                      : (WINDOW_HEIGHT - (WINDOW_HEIGHT - height)) + offsetY * WINDOW_HEIGHT / 2 + 35;
