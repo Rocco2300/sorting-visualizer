@@ -17,7 +17,7 @@ Program::Program()
     if(!ImGui::SFML::Init(window))
         std::cerr << "Error opening imgui window!\n";
 
-    delay = 5;
+    delay = 1;
     elementNo = 1000;
     currentPattern = 0;
     shuffled = true;
@@ -81,13 +81,6 @@ void Program::update()
         dt = clock.restart();
         handleEvents();
 
-        fpsTime = fpsClock.getElapsedTime();
-        if(fpsTime.asSeconds() >= 2.f)
-        {
-            fpsTime = fpsClock.restart();
-            std::cout << 1.f/dt.asSeconds() << std::endl;
-        }
-
         ImGui::SFML::Update(window, dt);
 
         ImGui::Begin("Hello, World!", NULL, ImGuiWindowFlags_NoTitleBar 
@@ -109,11 +102,9 @@ void Program::update()
 
             for(int i = 0; i < listNumber; i++)
             {
-                bool temp = (i % 2 == 0) ? descending : !descending;
-
                 std::promise<void> promise;
                 std::future<void> future = promise.get_future();
-                std::thread thread(&Program::initializer, this, std::move(promise), i, temp);
+                std::thread thread(&Program::initializer, this, std::move(promise), i, pattern->isDescending(i));
 
                 threadPool.push_back(std::move(thread));
                 futures.push_back(std::move(future));
@@ -145,7 +136,7 @@ void Program::update()
         }
         ImGui::SameLine(0.f, 10.f);
         ImGui::PushItemWidth(150);
-        if(ImGui::SliderInt("Delay", &delay, 1, 125))
+        if(ImGui::SliderInt("Delay", &delay, 1, 5))
         {
             sortingAlgorithm->setDelay(delay);
         }

@@ -33,6 +33,11 @@ void DiamondPattern::initializeLists()
     }
 }
 
+bool DiamondPattern::isDescending(int i)
+{
+    return (i % 2 == 0) ? descending : !descending;
+}
+
 void DiamondPattern::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     for(int list = 0; list < listNumber; list++)

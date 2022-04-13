@@ -15,9 +15,10 @@ public:
     Pattern();
     virtual ~Pattern() {}
     void setPointers(std::vector<ElementList>& elLists, int& elems);
+    virtual bool isDescending(int i) = 0;
     void setDescending(bool desc);
     virtual void initializeLists() = 0;
     int getListNumber();
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
-};
+};  
 

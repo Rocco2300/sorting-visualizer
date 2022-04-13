@@ -2,11 +2,10 @@
 
 #include "SortingAlgorithm.h"
 
-class RadixSort : public SortingAlgorithm
+class RadixSortLSD : public SortingAlgorithm
 {
-private:
 public:
-    RadixSort();
+    RadixSortLSD();
     void _sort(ElementList& elems, bool desc) override;
 private:
     int getMax(ElementList& elems);

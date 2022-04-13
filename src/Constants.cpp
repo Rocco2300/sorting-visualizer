@@ -10,7 +10,7 @@ const char* algorithmIndexes[7] =
     "Merge Sort",
     "Quick Sort",
     "Count Sort",
-    "Radix Sort"
+    "Radix Sort LSD",
 };
 
 SortingAlgorithm* algorithmList[7] = 
@@ -21,7 +21,7 @@ SortingAlgorithm* algorithmList[7] =
     new MergeSort(),
     new QuickSort(),
     new CountSort(),
-    new RadixSort()
+    new RadixSortLSD()
 };
 
 const char* patternIndexes[3] = 

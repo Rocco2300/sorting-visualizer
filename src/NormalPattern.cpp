@@ -31,6 +31,11 @@ void NormalPattern::initializeLists()
     }
 }
 
+bool NormalPattern::isDescending(int i)
+{
+    return descending;
+}
+
 void NormalPattern::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     for(int list = 0; list < listNumber; list++)

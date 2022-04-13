@@ -31,6 +31,11 @@ void PyramidPattern::initializeLists()
     }
 }
 
+bool PyramidPattern::isDescending(int i)
+{
+    return (i % 2 == 0) ? descending : !descending;
+}
+
 void PyramidPattern::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     for(int list = 0; list < listNumber; list++)

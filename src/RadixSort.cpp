@@ -1,10 +1,13 @@
 #include "RadixSort.h"
 
-RadixSort::RadixSort()
+#include <cmath>
+#include <iostream>
+
+RadixSortLSD::RadixSortLSD()
 {
 }
 
-int RadixSort::getMax(ElementList& elems)
+int RadixSortLSD::getMax(ElementList& elems)
 {
     int max = 0;
     
@@ -21,7 +24,7 @@ int RadixSort::getMax(ElementList& elems)
     return max;
 }
 
-void RadixSort::countSortAsc(ElementList& elems, int exp)
+void RadixSortLSD::countSortAsc(ElementList& elems, int exp)
 {
     std::vector<Element> output;
     output.reserve(elems.size());
@@ -58,7 +61,7 @@ void RadixSort::countSortAsc(ElementList& elems, int exp)
     }
 }
 
-void RadixSort::countSortDesc(ElementList& elems, int exp)
+void RadixSortLSD::countSortDesc(ElementList& elems, int exp)
 {
     std::vector<Element> output;
     output.reserve(elems.size());
@@ -95,7 +98,7 @@ void RadixSort::countSortDesc(ElementList& elems, int exp)
     }
 }
 
-void RadixSort::_sort(ElementList& elems, bool desc)
+void RadixSortLSD::_sort(ElementList& elems, bool desc)
 {
     int max = getMax(elems);
 
