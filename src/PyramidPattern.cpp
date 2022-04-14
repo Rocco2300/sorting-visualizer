@@ -19,10 +19,10 @@ void PyramidPattern::initializeLists()
         ElementList temp;
 
         int height = WINDOW_HEIGHT - 200;
-        for(int i = 0; i < *elements; i++)
+        for(int j = 0; j < *elements; j++)
         {
             Element el;
-            el.height = height * ((i+1) / (float)*elements);
+            el.height = height * ((j+1) / (float)*elements);
             el.color = sf::Color::White;
             temp.push_back(el);
         }
