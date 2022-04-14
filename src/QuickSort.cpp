@@ -5,6 +5,7 @@
 
 QuickSort::QuickSort()
 {
+    selectedPivotIndex = 0;
 }
 
 bool QuickSort::compare(int a, int b, bool desc)
@@ -15,22 +16,49 @@ bool QuickSort::compare(int a, int b, bool desc)
         return a > b;
 }
 
+void QuickSort::selectElements(ElementList& elems, int low, int high)
+{
+    for(int i = low; i <= high; i++)
+    {
+        elems[i].color = sf::Color::Green;
+        selectedElements.push_back(&elems[i]);
+    }
+}
+
+void QuickSort::unselectElements()
+{
+    for(int i = selectedElements.size()-1; i >= 0; i--)
+    {
+        selectedElements[i]->color = sf::Color::White;
+        selectedElements.erase(selectedElements.begin() + i);
+    }
+}
+
 void QuickSort::quickSort(ElementList& elems, int low, int high, bool desc)
 {
+    unselectElements();
+
     if(low < high)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         int pivot = lomutoPartition(elems, low, high, desc);
-        elems.at(pivot).color = sf::Color::Red;
 
+        selectedPivotIndex = pivot;
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         quickSort(elems, low, pivot-1, desc);
         quickSort(elems, pivot+1, high, desc);
-        elems.at(pivot).color = sf::Color::White;
     }
+
+    unselectElements();
+    elems[selectedPivotIndex].color = sf::Color::White;
 }
 
 int QuickSort::lomutoPartition(ElementList& elems, int low, int high, bool desc)
 {
+    elems[selectedPivotIndex].color = sf::Color::White;
+    selectElements(elems, low, high);
+    elems[high].color = sf::Color::Red;
+
     int pivot = elems.at(high).height;
     int i = (low - 1);
 
