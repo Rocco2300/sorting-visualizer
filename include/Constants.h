@@ -20,6 +20,9 @@
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
 
+const sf::Color RANGE_COLOR = sf::Color(219, 249, 184, 255);
+const sf::Color SELECTED_COLOR = sf::Color(221, 45, 74, 255);
+
 namespace cv
 {
 extern const char* algorithmIndexes[7];

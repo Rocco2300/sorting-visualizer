@@ -17,7 +17,7 @@ Program::Program()
     if(!ImGui::SFML::Init(window))
         std::cerr << "Error opening imgui window!\n";
 
-    delay = 1;
+    delay = 5;
     elementNo = 1000;
     currentPattern = 0;
     shuffled = true;
@@ -136,7 +136,7 @@ void Program::update()
         }
         ImGui::SameLine(0.f, 10.f);
         ImGui::PushItemWidth(150);
-        if(ImGui::SliderInt("Delay", &delay, 1, 5))
+        if(ImGui::SliderInt("Delay", &delay, 1, 125))
         {
             sortingAlgorithm->setDelay(delay);
         }
