@@ -1,4 +1,4 @@
-#include "RadixSort.h"
+#include "Constants.h"
 
 #include <cmath>
 #include <iostream>
@@ -13,7 +13,7 @@ int RadixSortLSD::getMax(ElementList& elems)
     
     for(size_t i = 0; i < elems.size(); i++)
     {
-        elems.at(i).color = sf::Color::Red;
+        elems.at(i).color = SELECTED_COLOR;
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         if(elems.at(i).height > max)
         {
@@ -48,7 +48,7 @@ void RadixSortLSD::countSortAsc(ElementList& elems, int exp)
         int index = (height / exp) % 10;
 
         output[count[index] - 1] = elems.at(i);
-        elems.at(i).color = sf::Color::Red;
+        elems.at(i).color = SELECTED_COLOR;
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         count[index]--;
         elems.at(i).color = sf::Color::White;
@@ -85,7 +85,7 @@ void RadixSortLSD::countSortDesc(ElementList& elems, int exp)
         int index = (height / exp) % 10;
 
         output[9 - count[index] - (9 - elems.size())] = elems.at(i);
-        elems.at(i).color = sf::Color::Red;
+        elems.at(i).color = SELECTED_COLOR;
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         count[index]--;
         elems.at(i).color = sf::Color::White;

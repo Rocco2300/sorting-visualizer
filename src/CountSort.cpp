@@ -1,4 +1,4 @@
-#include "CountSort.h"
+#include "Constants.h"
 
 CountSort::CountSort()
 {
@@ -10,7 +10,7 @@ int CountSort::getMax(ElementList& elems)
     
     for(size_t i = 0; i < elems.size(); i++)
     {
-        elems.at(i).color = sf::Color::Red;
+        elems.at(i).color = SELECTED_COLOR;
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         if(elems.at(i).height > max)
         {
@@ -48,7 +48,7 @@ void CountSort::_sort(ElementList& elems, bool desc)
                                 : count[index] - 1;
 
         output[outputIndex] =  elems.at(i);
-        elems.at(i).color = sf::Color::Red;
+        elems.at(i).color = SELECTED_COLOR;
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         count[index]--;
         elems.at(i).color = sf::Color::White;

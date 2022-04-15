@@ -1,5 +1,3 @@
-#include "MergeSort.h"
-
 #include "Constants.h"
 
 MergeSort::MergeSort()

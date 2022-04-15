@@ -1,4 +1,4 @@
-#include "BubbleSort.h"
+#include "Constants.h"
 
 BubbleSort::BubbleSort()
 {
@@ -12,7 +12,7 @@ void BubbleSort::bubbleSortAsc(ElementList& elems)
         {
             if(elems.at(j).height > elems.at(j+1).height)
             {
-                elems.at(j).color = sf::Color::Red;
+                elems.at(j).color = SELECTED_COLOR;
                 std::swap(elems.at(j), elems.at(j+1));
             }
             else
@@ -31,7 +31,7 @@ void BubbleSort::bubbleSortDesc(ElementList& elems)
         {
             if(elems.at(j).height < elems.at(j+1).height)
             {
-                elems.at(j).color = sf::Color::Red;
+                elems.at(j).color = SELECTED_COLOR;
                 std::swap(elems.at(j), elems.at(j+1));
             }
             else

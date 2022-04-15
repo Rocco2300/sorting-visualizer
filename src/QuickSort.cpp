@@ -1,5 +1,3 @@
-#include "QuickSort.h"
-
 #include "Constants.h"
 
 #include <cmath>
