@@ -18,16 +18,20 @@ void BubbleSort::bubbleSort(ElementList& elems, bool desc)
     {
         for(size_t j = 0; j < elems.size()-i-1; j++)
         {
+            elems[j].color = SCROLL_COLOR1;
+            elems[j+1].color = SCROLL_COLOR2;
+
             if(compare(elems.at(j).height, elems.at(j+1).height, desc))
             {
-                elems.at(j).color = SELECTED_COLOR;
+                std::this_thread::sleep_for(std::chrono::milliseconds(delay));
                 std::swap(elems.at(j), elems.at(j+1));
             }
-            else
-                elems.at(j).color = sf::Color::White;
             std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+
+            elems[j].color = sf::Color::White;
+            elems[j+1].color = sf::Color::White;
         }
-        elems.at(elems.size()-i-1).color = sf::Color::White;
+
     }
 } 
 
