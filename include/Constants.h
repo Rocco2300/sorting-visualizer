@@ -22,6 +22,8 @@ const int WINDOW_HEIGHT = 600;
 
 const sf::Color RANGE_COLOR = sf::Color(219, 249, 184, 255);
 const sf::Color SELECTED_COLOR = sf::Color(221, 45, 74, 255);
+const sf::Color SCROLL_COLOR1 = sf::Color(242, 106, 141, 255);
+const sf::Color SCROLL_COLOR2 = sf::Color(244, 156, 187, 255);
 
 namespace cv
 {
