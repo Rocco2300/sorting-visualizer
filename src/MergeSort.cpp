@@ -57,9 +57,10 @@ void MergeSort::merge(ElementList& elems, int low, int mid, int high, bool desc)
     int i = 0,
         j = 0,
         k = low;
-
+    
     while(i < sizeOne && j < sizeTwo)
     {
+        elems[k].color = SELECTED_COLOR;
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         if(compare(one[i].height, two[j].height, desc))
             elems.at(k++) = one[i++];
@@ -90,7 +91,7 @@ void MergeSort::mergeSort(ElementList& elems, int low, int high, bool desc)
     
     int mid = low + (high - low) / 2;
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+    std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
     mergeSort(elems, low, mid, desc);
     mergeSort(elems, mid+1, high, desc);
