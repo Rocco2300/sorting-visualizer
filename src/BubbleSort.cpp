@@ -18,8 +18,8 @@ void BubbleSort::bubbleSort(ElementList& elems, bool desc)
     {
         for(size_t j = 0; j < elems.size()-i-1; j++)
         {
-            elems[j].color = SCROLL_COLOR1;
-            elems[j+1].color = SCROLL_COLOR2;
+            elems[j].color = SCROLL_COLOR;
+            elems[j+1].color = SCROLL_COLOR;
 
             if(compare(elems.at(j).height, elems.at(j+1).height, desc))
             {
