@@ -2,6 +2,8 @@
 
 #include "Constants.h"
 
+#include <cmath>
+
 NormalPattern::NormalPattern()
 {
     this->listNumber = 1;
@@ -30,8 +32,6 @@ void NormalPattern::initializeLists()
         elemLists->push_back(temp);
     }
 }
-
-
 
 bool NormalPattern::isDescending(int i)
 {

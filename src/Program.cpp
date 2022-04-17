@@ -8,6 +8,8 @@
 #include "imgui.h"
 #include "imgui-SFML.h"
 
+#include <SFML/Window.hpp>
+
 Program::Program()
 {
     srand(time(NULL));
