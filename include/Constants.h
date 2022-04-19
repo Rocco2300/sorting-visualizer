@@ -14,6 +14,7 @@
 #include "NormalPattern.h"
 #include "PyramidPattern.h"
 #include "DiamondPattern.h"
+#include "StarPattern.h"
 
 // Constant variables
 
@@ -28,8 +29,8 @@ namespace cv
 {
 extern const char* algorithmIndexes[7];
 extern SortingAlgorithm* algorithmList[7];
-extern const char* patternIndexes[3];
-extern Pattern* patternList[3];
+extern const char* patternIndexes[4];
+extern Pattern* patternList[4];
 extern const int listNumberSettings[3];
 extern const int temporary[3][2];
 };

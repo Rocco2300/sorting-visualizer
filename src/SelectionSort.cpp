@@ -22,7 +22,7 @@ void SelectionSort::_sort(ElementList& elems, bool desc)
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         for(size_t j = i+1; j < elems.size(); j++)
         {
-            elems[j].color = SCROLL_COLOR1;
+            elems[j].color = SCROLL_COLOR;
 
             std::this_thread::sleep_for(std::chrono::milliseconds(delay));
             if(compare(elems.at(j).height, elems.at(index).height, desc))
