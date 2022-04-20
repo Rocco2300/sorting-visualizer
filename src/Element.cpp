@@ -39,9 +39,9 @@ Element::~Element()
     delete rect;
 }
 
-sf::RectangleShape& Element::operator()()
+void Element::setFillColor(sf::Color color)
 {
-    return *rect;
+    rect->setFillColor(color);
 }
 
 bool Element::operator<(const Element& other) const

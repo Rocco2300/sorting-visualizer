@@ -17,7 +17,8 @@ public:
     bool operator>(const Element& other) const;
     Element& operator=(const Element& other);
     
-    sf::RectangleShape& operator()();
+    // Accessors for rectangle
+    void setFillColor(sf::Color color);
 
     static void swap(Element& a, Element& b);
 

@@ -8,7 +8,7 @@
 #include "BubbleSort.h"
 // #include "QuickSort.h"
 // #include "MergeSort.h"
-// #include "InsertionSort.h"
+#include "InsertionSort.h"
 // #include "SelectionSort.h"
 // #include "CountSort.h"
 // #include "RadixSort.h"
@@ -29,8 +29,8 @@ const sf::Color SCROLL_COLOR = sf::Color(244, 156, 187, 255);
 
 namespace cv
 {
-extern const char* algorithmIndexes[1];
-extern SortingAlgorithm* algorithmList[1];
+extern const char* algorithmIndexes[2];
+extern SortingAlgorithm* algorithmList[2];
 extern const char* patternIndexes[1];
 extern Pattern* patternList[1];
 };
