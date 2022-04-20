@@ -8,17 +8,21 @@ class Pattern : public sf::Drawable
 {
 protected:
     std::vector<ElementList>* elemLists;
-    int* elements;
+    int elements;
     bool descending;
     int listNumber;
 public:
     Pattern();
     virtual ~Pattern() {}
-    void setPointers(std::vector<ElementList>& elLists, int& elems);
-    virtual bool isDescending(int i) = 0;
-    void setDescending(bool desc);
-    virtual void initializeLists() = 0;
+
     int getListNumber();
+    
+    void setPointer(std::vector<ElementList>& elLists);
+    void setDescending(bool desc);
+    void setElementNo(int elementNo);
+
+    virtual void initializeLists() = 0;
+    virtual bool isDescending(int i) = 0;
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 };  
 

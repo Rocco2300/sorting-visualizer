@@ -27,7 +27,8 @@ Program::Program()
 
     pattern = cv::patternList[currentPattern];
     listNumber = pattern->getListNumber();
-    pattern->setPointers(elemLists, elementNo);
+    pattern->setPointer(elemLists);
+    pattern->setElementNo(elementNo);
     pattern->setDescending(descending);
     pattern->initializeLists();
 
@@ -184,10 +185,11 @@ void Program::performActions()
         {
         case Resize:
             pattern->setDescending(descending);
+            pattern->setElementNo(elementNo);
             pattern->initializeLists();
             for(int i = 0; i < listNumber; i++)
             {
-                std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+                sortingAlgorithm->shuffle(elemLists[i]);
             }
             break;
         case AlgorithmChange:
@@ -196,13 +198,13 @@ void Program::performActions()
         case PatternChange:
             pattern = cv::patternList[currentPattern];
             listNumber = pattern->getListNumber();
-            pattern->setPointers(elemLists, elementNo);
+            pattern->setPointer(elemLists);
             pattern->setDescending(descending);
             pattern->initializeLists();
             for(int i = 0; i < listNumber; i++)
             {
-                std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
-            }
+                sortingAlgorithm->shuffle(elemLists[i]);
+            }   
             break;
         }
     }

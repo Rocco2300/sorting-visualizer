@@ -9,13 +9,17 @@ int Pattern::getListNumber()
     return listNumber;
 }
 
-void Pattern::setPointers(std::vector<ElementList>& elLists, int& elems)
+void Pattern::setPointer(std::vector<ElementList>& elLists)
 {
     elemLists = &elLists;
-    elements = &elems;
 }
 
 void Pattern::setDescending(bool desc)
 {
     descending = desc;
+}
+
+void Pattern::setElementNo(int elementNo)
+{
+    elements = elementNo;
 }

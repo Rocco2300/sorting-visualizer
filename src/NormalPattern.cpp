@@ -7,7 +7,6 @@
 NormalPattern::NormalPattern()
 {
     this->listNumber = 1;
-    this->elements = nullptr;
     this->elemLists = nullptr;
 }
 
@@ -21,15 +20,15 @@ void NormalPattern::initializeLists()
         ElementList temp;
 
         int height = WINDOW_HEIGHT - 200;
-        for(int j = 0; j < *elements; j++)
+        for(int j = 0; j < elements; j++)
         {
-            float w = WINDOW_WIDTH / (float)*elements;
-            float h = height * ((j+1) / (float)*elements);
+            float w = WINDOW_WIDTH / (float)elements;
+            float h = height * ((j+1) / (float)elements);
 
             Element el(w, h);
-            el().setFillColor(sf::Color::White);
-            el().setOrigin(0, h);
-            el().setPosition((WINDOW_WIDTH / *elements) * j, WINDOW_HEIGHT);
+            el.setFillColor(sf::Color::White);
+            el.setOrigin(0.f, h);
+            el.setPosition((WINDOW_WIDTH / (float)elements) * j, (float)WINDOW_HEIGHT);
             temp.push_back(std::move(el));
         }
         
@@ -46,9 +45,9 @@ void NormalPattern::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 {
     for(int list = 0; list < listNumber; list++)
     {
-        for(int i = 0; i < *elements; i++)
+        for(int i = 0; i < elements; i++)
         {
-            target.draw(elemLists->at(list)[i]);
+            target.draw(elemLists->at(list)[i], states);
         }
     }
 }
