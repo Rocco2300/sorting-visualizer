@@ -1,20 +1,10 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "Element.h"
+
 #include <thread>
 
-// struct Element
-// {
-//     float height;
-//     sf::Color color;
-// };
-
-typedef sf::RectangleShape Element;
-typedef std::unique_ptr<Element> ElementPtr;
-typedef std::vector<ElementPtr> ElementList;
-
-bool operator<(const ElementPtr& a, const ElementPtr& b);
-bool operator>(const ElementPtr& a, const ElementPtr& b);
+typedef std::vector<Element> ElementList;
 
 class SortingAlgorithm
 {
@@ -30,6 +20,5 @@ public:
 protected:
     virtual void _sort(ElementList& elems, bool desc) { }
 
-    bool compare(const ElementPtr& a, const ElementPtr& b, bool desc);
-    void swap(ElementPtr& a, ElementPtr& b);
+    bool compare(const Element& a, const Element& b, bool desc);
 };
