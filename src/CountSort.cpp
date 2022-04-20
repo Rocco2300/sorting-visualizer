@@ -1,6 +1,5 @@
 #include "Constants.h"
 
-#if CEVA
 CountSort::CountSort()
 {
 }
@@ -11,21 +10,23 @@ int CountSort::getMax(ElementList& elems)
     
     for(size_t i = 0; i < elems.size(); i++)
     {
-        elems.at(i).color = SELECTED_COLOR;
+        elems[i].setFillColor(SELECTED_COLOR);
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        if(elems.at(i).height > max)
+
+        if(elems[i].getHeight() > max)
         {
-            max = elems.at(i).height;
+            max = elems[i].getHeight();
         }
-        elems.at(i).color = sf::Color::White;
+        elems[i].setFillColor(sf::Color::White);
     }
     return max;
 }
 
 void CountSort::_sort(ElementList& elems, bool desc)
 {
-    std::vector<Element> output;
+    ElementList output;
     output.reserve(elems.size());
+    output.resize(elems.size());
 
     int max = getMax(elems);
     int count[max + 1];
@@ -35,7 +36,7 @@ void CountSort::_sort(ElementList& elems, bool desc)
 
     for(size_t i = 0; i < elems.size(); i++)
     {
-        int index = elems.at(i).height;
+        int index = elems[i].getHeight();
         count[index] ++;
     }
 
@@ -44,21 +45,22 @@ void CountSort::_sort(ElementList& elems, bool desc)
 
     for(int i = elems.size()-1; i >= 0; i--)
     {
-        int index = elems.at(i).height;
+        int index = elems[i].getHeight();
         int outputIndex = desc? max - count[index] - (max - elems.size())
                                 : count[index] - 1;
 
-        output[outputIndex] =  elems.at(i);
-        elems.at(i).color = SELECTED_COLOR;
+        output[outputIndex] = elems[i];
+        elems[i].setFillColor(SELECTED_COLOR);
+
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+
         count[index]--;
-        elems.at(i).color = sf::Color::White;
+        elems[i].setFillColor(sf::Color::White);
     }
     
     for(size_t i = 0; i < elems.size(); i++)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        elems.at(i) = output[i];
+        elems[i] = output[i];
     }
 }
-#endif

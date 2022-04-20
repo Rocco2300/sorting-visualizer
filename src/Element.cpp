@@ -39,6 +39,21 @@ Element::~Element()
     delete rect;
 }
 
+int Element::getHeight()
+{
+    return (int)rect->getSize().y;
+}
+
+void Element::setOrigin(float x, float y)
+{
+    rect->setOrigin(x, y);
+}
+
+void Element::setPosition(float x, float y)
+{
+    rect->setPosition(x, y);
+}
+
 void Element::setFillColor(sf::Color color)
 {
     rect->setFillColor(color);

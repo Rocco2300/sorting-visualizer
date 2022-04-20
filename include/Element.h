@@ -18,6 +18,10 @@ public:
     Element& operator=(const Element& other);
     
     // Accessors for rectangle
+    int getHeight();
+    
+    void setOrigin(float x, float y);
+    void setPosition(float x, float y);
     void setFillColor(sf::Color color);
 
     static void swap(Element& a, Element& b);

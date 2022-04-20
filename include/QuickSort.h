@@ -10,7 +10,6 @@ public:
     std::mutex mutex;
     std::vector<Element*> range;
 private:
-    bool compare(int a, int b, bool desc);
     void selectElements(ElementList& elems, int low, int high);
     void unselectElements(ElementList& elems);
     void _sort(ElementList& elems, bool desc) override;
