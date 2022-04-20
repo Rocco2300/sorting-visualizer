@@ -1,5 +1,6 @@
 #include "Constants.h"
 
+#if CEVA
 SelectionSort::SelectionSort()
 {
 }
@@ -39,3 +40,4 @@ void SelectionSort::_sort(ElementList& elems, bool desc)
         std::swap(elems.at(i), elems.at(index));
     }
 }
+#endif

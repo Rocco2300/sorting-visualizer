@@ -3,6 +3,8 @@
 #include <cmath>
 #include <iostream>
 
+
+#if CEVA
 QuickSort::QuickSort()
 {
 }
@@ -115,3 +117,4 @@ void QuickSort::_sort(ElementList& elems, bool desc)
 {
     quickSort(elems, 0, elems.size()-1, desc);
 }
+#endif

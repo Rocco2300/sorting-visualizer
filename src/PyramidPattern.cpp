@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 
+#if CEVA
 PyramidPattern::PyramidPattern()
 {
     this->listNumber = 2;
@@ -52,3 +53,4 @@ void PyramidPattern::draw(sf::RenderTarget& target, sf::RenderStates states) con
         }
     }
 }
+#endif

@@ -1,5 +1,6 @@
 #include "Constants.h"
 
+#if CEVA
 CountSort::CountSort()
 {
 }
@@ -60,3 +61,4 @@ void CountSort::_sort(ElementList& elems, bool desc)
         elems.at(i) = output[i];
     }
 }
+#endif

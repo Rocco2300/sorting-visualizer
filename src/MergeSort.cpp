@@ -1,5 +1,6 @@
 #include "Constants.h"
 
+#if CEVA
 MergeSort::MergeSort()
 {
 }
@@ -103,3 +104,4 @@ void MergeSort::_sort(ElementList& elems, bool desc)
 {
     mergeSort(elems, 0, elems.size()-1, desc);
 }
+#endif

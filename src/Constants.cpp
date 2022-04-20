@@ -2,60 +2,42 @@
 
 namespace cv
 {
-const char* algorithmIndexes[7] =
+const char* algorithmIndexes[1] =
 {
     "Bubble Sort",
-    "Selection Sort",
-    "Insertion Sort",
-    "Merge Sort",
-    "Quick Sort",
-    "Count Sort",
-    "Radix Sort LSD",
+    // "Selection Sort",
+    // "Insertion Sort"
+    // "Merge Sort",
+    // "Quick Sort",
+    // "Count Sort",
+    // "Radix Sort LSD",
 };
 
-SortingAlgorithm* algorithmList[7] = 
+SortingAlgorithm* algorithmList[1] = 
 {
     new BubbleSort(),
-    new SelectionSort(),
-    new InsertionSort(),
-    new MergeSort(),
-    new QuickSort(),
-    new CountSort(),
-    new RadixSortLSD()
+    // new SelectionSort(),
+    // new InsertionSort()
+    // new MergeSort(),
+    // new QuickSort(),
+    // new CountSort(),
+    // new RadixSortLSD()
 };
 
-const char* patternIndexes[4] = 
+const char* patternIndexes[1] = 
 {
     "Normal",
-    "Pyramid",
-    "Diamond",
-    "Star"
+    // "Pyramid",
+    // "Diamond",
+    // "Star"
 };
 
-Pattern* patternList[4] =
+Pattern* patternList[1] =
 {
     new NormalPattern(),
-    new PyramidPattern(),
-    new DiamondPattern(),
-    new StarPattern()
-};
-
-const int listNumberSettings[3] = { 1, 2, 4 };
-
-const int temporary[3][2] = 
-{ 
-    {
-        WINDOW_HEIGHT - 200,
-        1
-    },
-    {
-        WINDOW_HEIGHT - 200,
-        2
-    },
-    {
-        (WINDOW_HEIGHT / 2) - 35,
-        2
-    }
+    // new PyramidPattern(),
+    // new DiamondPattern(),
+    // new StarPattern()
 };
 };
 

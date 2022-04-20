@@ -2,7 +2,7 @@
 
 #include "Constants.h"
 
-#include <cmath>
+#include <iostream>
 
 NormalPattern::NormalPattern()
 {
@@ -23,13 +23,17 @@ void NormalPattern::initializeLists()
         int height = WINDOW_HEIGHT - 200;
         for(int j = 0; j < *elements; j++)
         {
-            Element el;
-            el.height = height * ((j+1) / (float)*elements);
-            el.color = sf::Color::White;
-            temp.push_back(el);
-        }
+            float w = WINDOW_WIDTH / (float)*elements;
+            float h = height * ((j+1) / (float)*elements);
 
-        elemLists->push_back(temp);
+            ElementPtr el(new Element({w, h}));
+            el->setFillColor(sf::Color::White);
+            el->setOrigin(0, h);
+            el->setPosition((WINDOW_WIDTH / *elements) * j, WINDOW_HEIGHT);
+            temp.push_back(std::move(el));
+        }
+        
+        elemLists->push_back(std::move(temp));
     }
 }
 
@@ -42,15 +46,9 @@ void NormalPattern::draw(sf::RenderTarget& target, sf::RenderStates states) cons
 {
     for(int list = 0; list < listNumber; list++)
     {
-        sf::RectangleShape temp;
         for(int i = 0; i < *elements; i++)
         {
-            temp.setSize({(WINDOW_WIDTH / (float)*elements), elemLists->at(list)[i].height});
-            temp.setFillColor(elemLists->at(list)[i].color);
-            temp.setOrigin({0, elemLists->at(list)[i].height});
-            temp.setPosition((WINDOW_WIDTH / (float)*elements * i), WINDOW_HEIGHT);
-
-            target.draw(temp);
+            target.draw(*elemLists->at(list)[i]);
         }
     }
 }

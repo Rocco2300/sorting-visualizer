@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Constants.h"
 
+#if CEVA
 DiamondPattern::DiamondPattern()
 {
     this->listNumber = 4;
@@ -71,3 +72,4 @@ void DiamondPattern::draw(sf::RenderTarget& target, sf::RenderStates states) con
         }
     }
 }
+#endif

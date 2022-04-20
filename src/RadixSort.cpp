@@ -3,6 +3,7 @@
 #include <cmath>
 #include <iostream>
 
+#if CEVA
 RadixSortLSD::RadixSortLSD()
 {
 }
@@ -110,3 +111,4 @@ void RadixSortLSD::_sort(ElementList& elems, bool desc)
             countSortDesc(elems, exp);
     }
 }
+#endif

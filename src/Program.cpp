@@ -20,7 +20,7 @@ Program::Program()
         std::cerr << "Error opening imgui window!\n";
 
     delay = 5;
-    elementNo = 1000;
+    elementNo = 50;
     currentPattern = 0;
     shuffled = true;
     descending = false;
@@ -31,16 +31,16 @@ Program::Program()
     pattern->setDescending(descending);
     pattern->initializeLists();
 
-    for(int i = 0; i < listNumber; i++)
-    {
-        std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
-    }
-
     fpsTime = fpsClock.restart();
 
     currentAlgorithm = 0;
     sortingAlgorithm = cv::algorithmList[currentAlgorithm];
     sortingAlgorithm->setDelay(delay); 
+
+    for(int i = 0; i < listNumber; i++)
+    {
+        sortingAlgorithm->shuffle(elemLists[i]);
+    }
 }
 
 void Program::checkThreadProgress()
@@ -97,7 +97,7 @@ void Program::update()
             {
                 for(int i = 0; i < listNumber; i++)
                 {
-                    std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+                    sortingAlgorithm->shuffle(elemLists[i]);
                 }
                 shuffled = true;
             }
@@ -120,14 +120,15 @@ void Program::update()
             shuffled = true;
             for(int i = 0; i < listNumber; i++)
             {
-                std::random_shuffle(elemLists[i].begin(), elemLists[i].end());
+                sortingAlgorithm->shuffle(elemLists[i]);
             }
         }
         ImGui::SameLine(0.f, 10.f);
         ImGui::Checkbox("Descending", &descending);
         ImGui::SameLine(500.f, 0.f);
         ImGui::PushItemWidth(200);
-        if(ImGui::Combo("Algorithm", &currentAlgorithm, cv::algorithmIndexes, 7))
+        int algoSize = sizeof(cv::algorithmIndexes) / sizeof(cv::algorithmIndexes[0]);
+        if(ImGui::Combo("Algorithm", &currentAlgorithm, cv::algorithmIndexes, algoSize))
         {
             actions.push(Action::AlgorithmChange);
         }
@@ -144,7 +145,8 @@ void Program::update()
         }
         ImGui::SameLine(0.f, 10.f);
         ImGui::PushItemWidth(200);
-        if(ImGui::Combo("Pattern", &currentPattern, cv::patternIndexes, 4))
+        int pattSize = sizeof(cv::patternIndexes) / sizeof(cv::patternIndexes[0]);
+        if(ImGui::Combo("Pattern", &currentPattern, cv::patternIndexes, pattSize))
         {
             actions.push(Action::PatternChange);
         }

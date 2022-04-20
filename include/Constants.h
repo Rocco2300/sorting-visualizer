@@ -3,18 +3,20 @@
 #include <functional>
 #include <map>
 
+#define CEVA false
+
 #include "BubbleSort.h"
-#include "QuickSort.h"
-#include "MergeSort.h"
-#include "InsertionSort.h"
-#include "SelectionSort.h"
-#include "CountSort.h"
-#include "RadixSort.h"
+// #include "QuickSort.h"
+// #include "MergeSort.h"
+// #include "InsertionSort.h"
+// #include "SelectionSort.h"
+// #include "CountSort.h"
+// #include "RadixSort.h"
 
 #include "NormalPattern.h"
-#include "PyramidPattern.h"
-#include "DiamondPattern.h"
-#include "StarPattern.h"
+// #include "PyramidPattern.h"
+// #include "DiamondPattern.h"
+// #include "StarPattern.h"
 
 // Constant variables
 
@@ -27,10 +29,8 @@ const sf::Color SCROLL_COLOR = sf::Color(244, 156, 187, 255);
 
 namespace cv
 {
-extern const char* algorithmIndexes[7];
-extern SortingAlgorithm* algorithmList[7];
-extern const char* patternIndexes[4];
-extern Pattern* patternList[4];
-extern const int listNumberSettings[3];
-extern const int temporary[3][2];
+extern const char* algorithmIndexes[1];
+extern SortingAlgorithm* algorithmList[1];
+extern const char* patternIndexes[1];
+extern Pattern* patternList[1];
 };

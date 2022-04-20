@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 
+#if CEVA
 StarPattern::StarPattern()
 {
     this->listNumber = 8;
@@ -84,3 +85,4 @@ void StarPattern::draw(sf::RenderTarget& target, sf::RenderStates states) const
         }
     }
 }
+#endif
