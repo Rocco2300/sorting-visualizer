@@ -25,7 +25,6 @@ int CountSort::getMax(ElementList& elems)
 void CountSort::_sort(ElementList& elems, bool desc)
 {
     ElementList output;
-    output.reserve(elems.size());
     output.resize(elems.size());
 
     int max = getMax(elems);

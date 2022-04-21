@@ -3,7 +3,6 @@
 #include <cmath>
 #include <iostream>
 
-#if CEVA
 RadixSortLSD::RadixSortLSD()
 {
 }
@@ -14,13 +13,14 @@ int RadixSortLSD::getMax(ElementList& elems)
     
     for(size_t i = 0; i < elems.size(); i++)
     {
-        elems.at(i).color = SELECTED_COLOR;
+        elems[i].setFillColor(SELECTED_COLOR);
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        if(elems.at(i).height > max)
+
+        if(elems[i].getHeight() > max)
         {
-            max = elems.at(i).height;
+            max = elems[i].getHeight();
         }
-        elems.at(i).color = sf::Color::White;
+        elems[i].setFillColor(sf::Color::White);
     }
     return max;
 }
@@ -28,13 +28,13 @@ int RadixSortLSD::getMax(ElementList& elems)
 void RadixSortLSD::countSortAsc(ElementList& elems, int exp)
 {
     std::vector<Element> output;
-    output.reserve(elems.size());
+    output.resize(elems.size());
 
     int count[10] = { 0 };
 
     for(size_t i = 0; i < elems.size(); i++)
     {
-        int height = elems.at(i).height;
+        int height = elems[i].getHeight();
         int index = (height / exp) % 10;
 
         count[index]++;
@@ -45,33 +45,33 @@ void RadixSortLSD::countSortAsc(ElementList& elems, int exp)
 
     for(int i = elems.size()-1; i >= 0; i--)
     {
-        int height = elems.at(i).height;
+        int height = elems[i].getHeight();
         int index = (height / exp) % 10;
 
-        output[count[index] - 1] = elems.at(i);
-        elems.at(i).color = SELECTED_COLOR;
+        output[count[index] - 1] = elems[i];
+        elems[i].setFillColor(SELECTED_COLOR);
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         count[index]--;
-        elems.at(i).color = sf::Color::White;
+        elems[i].setFillColor(sf::Color::White);
     }
 
     for(size_t i = 0; i < elems.size(); i++)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        elems.at(i) = output[i];
+        elems[i] = output[i];
     }
 }
 
 void RadixSortLSD::countSortDesc(ElementList& elems, int exp)
 {
     std::vector<Element> output;
-    output.reserve(elems.size());
+    output.resize(elems.size());
 
     int count[10] = { 0 };
 
     for(size_t i = 0; i < elems.size(); i++)
     {
-        int height = elems.at(i).height;
+        int height = elems[i].getHeight();
         int index = (height / exp) % 10;
 
         count[index]++;
@@ -82,20 +82,20 @@ void RadixSortLSD::countSortDesc(ElementList& elems, int exp)
 
     for(size_t i = 0; i < elems.size(); i++)
     {
-        int height = elems.at(i).height;
+        int height = elems[i].getHeight();
         int index = (height / exp) % 10;
 
-        output[9 - count[index] - (9 - elems.size())] = elems.at(i);
-        elems.at(i).color = SELECTED_COLOR;
+        output[9 - count[index] - (9 - elems.size())] = elems[i];
+        elems[i].setFillColor(SELECTED_COLOR);
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         count[index]--;
-        elems.at(i).color = sf::Color::White;
+        elems[i].setFillColor(sf::Color::White);
     }
 
     for(size_t i = 0; i < elems.size(); i++)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        elems.at(i) = output[i];
+        elems[i] = output[i];
     }
 }
 
@@ -111,4 +111,3 @@ void RadixSortLSD::_sort(ElementList& elems, bool desc)
             countSortDesc(elems, exp);
     }
 }
-#endif

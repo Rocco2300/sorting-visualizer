@@ -2,26 +2,26 @@
 
 namespace cv
 {
-const char* algorithmIndexes[5] =
+const char* algorithmIndexes[7] =
 {
     "Bubble Sort",
     "Selection Sort",
     "Insertion Sort",
-    // "Merge Sort",
+    "Merge Sort",
     "Quick Sort",
-    "Count Sort"
-    // "Radix Sort LSD"
+    "Count Sort",
+    "Radix Sort LSD"
 };
 
-SortingAlgorithm* algorithmList[5] = 
+SortingAlgorithm* algorithmList[7] = 
 {
     new BubbleSort(),
     new SelectionSort(),
     new InsertionSort(),
-    // new MergeSort(),
+    new MergeSort(),
     new QuickSort(),
-    new CountSort()
-    // new RadixSortLSD()
+    new CountSort(),
+    new RadixSortLSD()
 };
 
 const char* patternIndexes[1] = 

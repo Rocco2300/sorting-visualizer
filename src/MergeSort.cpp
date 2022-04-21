@@ -1,16 +1,7 @@
 #include "Constants.h"
 
-#if CEVA
 MergeSort::MergeSort()
 {
-}
-
-bool MergeSort::compare(int a, int b, bool desc)
-{
-    if(!desc)
-        return a < b;
-    else
-        return a > b;
 }
 
 void MergeSort::selectRange(ElementList& elems, int low, int high)
@@ -18,7 +9,7 @@ void MergeSort::selectRange(ElementList& elems, int low, int high)
     mutex.lock();
     for(int i = low; i <= high; i++)
     {
-        elems[i].color = RANGE_COLOR;
+        elems[i].setFillColor(RANGE_COLOR);
         range.push_back(&elems[i]);
     }
     mutex.unlock();
@@ -31,7 +22,7 @@ void MergeSort::unselectRange(ElementList& elems)
     {
         if(range[i] >= &elems[0] && range[i] <= &elems[elems.size()-1])
         {
-            range[i]->color = sf::Color::White;
+            range[i]->setFillColor(sf::Color::White);
             range.erase(range.begin() + i);
         }
     }
@@ -45,15 +36,15 @@ void MergeSort::merge(ElementList& elems, int low, int mid, int high, bool desc)
     int sizeOne = mid - low + 1;
     int sizeTwo = high - mid;
 
-    std::vector<Element> one;
-    std::vector<Element> two;
-    one.reserve(sizeOne);
-    two.reserve(sizeTwo);
+    ElementList one;
+    ElementList two;
+    one.resize(sizeOne);
+    two.resize(sizeTwo);
 
     for(int i = 0; i < sizeOne; i++)
-        one[i] = elems.at(low + i);
+        one[i] = elems[low + i];
     for(int j = 0; j < sizeTwo; j++)
-        two[j] = elems.at(mid + 1 + j);
+        two[j] = elems[mid + 1 + j];
 
     int i = 0,
         j = 0,
@@ -61,25 +52,25 @@ void MergeSort::merge(ElementList& elems, int low, int mid, int high, bool desc)
     
     while(i < sizeOne && j < sizeTwo)
     {
-        elems[k].color = SELECTED_COLOR;
+        elems[k].setFillColor(SELECTED_COLOR);
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        if(compare(one[i].height, two[j].height, desc))
-            elems.at(k++) = one[i++];
+        if(compare(one[i], two[j], desc))
+            elems[k++] = one[i++];
         else
-            elems.at(k++) = two[j++];
+            elems[k++] = two[j++];
     }
 
     while(i < sizeOne)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        elems.at(k++) = one[i++];
+        elems[k++] = one[i++];
     }
 
     while(j < sizeTwo)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 
-        elems.at(k++) = two[j++];
+        elems[k++] = two[j++];
     }
 }
 
@@ -104,4 +95,3 @@ void MergeSort::_sort(ElementList& elems, bool desc)
 {
     mergeSort(elems, 0, elems.size()-1, desc);
 }
-#endif
