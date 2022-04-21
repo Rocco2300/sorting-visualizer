@@ -1,4 +1,5 @@
 #include "Element.h"
+#include <iostream>
 
 Element::Element()
 {
@@ -20,17 +21,17 @@ Element::Element(const Element& other)
 
     auto pos = other.rect->getPosition();
     auto col = other.rect->getFillColor();
+    auto org = other.rect->getOrigin();
 
     rect->setPosition(pos);
     rect->setFillColor(col);
-    rect->setOrigin(0, size.y);
+    rect->setOrigin(org);
 }
 
 Element::Element(Element&& other)
 {
     delete rect;
     rect = other.rect;
-
     other.rect = nullptr;
 }
 
@@ -42,6 +43,11 @@ Element::~Element()
 int Element::getHeight()
 {
     return (int)rect->getSize().y;
+}
+
+sf::Vector2f Element::getOrigin()
+{
+    return rect->getOrigin();
 }
 
 void Element::setOrigin(float x, float y)
@@ -73,10 +79,11 @@ Element& Element::operator=(const Element& other)
 {
     auto size = other.rect->getSize();
     auto col = other.rect->getFillColor();
+    auto org = other.rect->getOrigin();
 
     rect->setSize(size);
     rect->setFillColor(col);
-    rect->setOrigin(0, size.y);
+    rect->setOrigin(org);
 
     return *this;
 }

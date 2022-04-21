@@ -19,6 +19,7 @@ public:
     
     // Accessors for rectangle
     int getHeight();
+    sf::Vector2f getOrigin();
     
     void setOrigin(float x, float y);
     void setPosition(float x, float y);

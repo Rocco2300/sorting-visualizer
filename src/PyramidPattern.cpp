@@ -20,8 +20,8 @@ void PyramidPattern::initializeLists()
         int height = WINDOW_HEIGHT - 200;
         for(int i = 0; i < elements; i++)
         {
-            int w = (WINDOW_WIDTH / (float)elements) / 2;
-            int h = height * ((i+1) / (float)elements);
+            float w = (WINDOW_WIDTH / (float)elements) / 2;
+            float h = height * ((i+1) / (float)elements);
             Element el(w, h);
 
             el.setPosition((WINDOW_WIDTH / (float)elements * i) / 2 + list * (WINDOW_WIDTH / 2), WINDOW_HEIGHT);
@@ -29,7 +29,7 @@ void PyramidPattern::initializeLists()
             temp.push_back(std::move(el));
         }
 
-        elemLists->push_back(temp);
+        elemLists->push_back(std::move(temp));
     }
 }
 
