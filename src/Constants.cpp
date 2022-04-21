@@ -24,18 +24,18 @@ SortingAlgorithm* algorithmList[7] =
     new RadixSortLSD()
 };
 
-const char* patternIndexes[1] = 
+const char* patternIndexes[2] = 
 {
     "Normal",
-    // "Pyramid",
+    "Pyramid",
     // "Diamond",
     // "Star"
 };
 
-Pattern* patternList[1] =
+Pattern* patternList[2] =
 {
     new NormalPattern(),
-    // new PyramidPattern(),
+    new PyramidPattern(),
     // new DiamondPattern(),
     // new StarPattern()
 };

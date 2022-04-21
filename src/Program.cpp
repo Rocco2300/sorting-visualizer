@@ -187,6 +187,7 @@ void Program::performActions()
             pattern->setDescending(descending);
             pattern->setElementNo(elementNo);
             pattern->initializeLists();
+
             for(int i = 0; i < listNumber; i++)
             {
                 sortingAlgorithm->shuffle(elemLists[i]);
@@ -198,9 +199,12 @@ void Program::performActions()
         case PatternChange:
             pattern = cv::patternList[currentPattern];
             listNumber = pattern->getListNumber();
+
             pattern->setPointer(elemLists);
+            pattern->setElementNo(elementNo);
             pattern->setDescending(descending);
             pattern->initializeLists();
+
             for(int i = 0; i < listNumber; i++)
             {
                 sortingAlgorithm->shuffle(elemLists[i]);

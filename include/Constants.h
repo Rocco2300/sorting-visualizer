@@ -14,7 +14,7 @@
 #include "RadixSort.h"
 
 #include "NormalPattern.h"
-// #include "PyramidPattern.h"
+#include "PyramidPattern.h"
 // #include "DiamondPattern.h"
 // #include "StarPattern.h"
 
@@ -31,6 +31,6 @@ namespace cv
 {
 extern const char* algorithmIndexes[7];
 extern SortingAlgorithm* algorithmList[7];
-extern const char* patternIndexes[1];
-extern Pattern* patternList[1];
+extern const char* patternIndexes[2];
+extern Pattern* patternList[2];
 };
