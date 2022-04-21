@@ -42,9 +42,13 @@ public:
     Program();
     void update();
 private:
-    void initializer(std::promise<void>&& promise, int i, bool desc);
+    void sortInitializer(std::promise<void>&& promise, int i, bool desc);
+    void shuffleInitializer(std::promise<void>&& promise, int i, int delay);
     void checkThreadProgress();
+
+    void shuffleLists(int delay);
+    void performActions();
+
     void handleEvents();
     void draw();
-    void performActions();
 };

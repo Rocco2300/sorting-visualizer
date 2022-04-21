@@ -15,7 +15,7 @@ public:
     virtual ~SortingAlgorithm() { }
     virtual void sort(ElementList& elems, bool desc);
 
-    void shuffle(ElementList& elems);
+    void shuffle(ElementList& elems, int delay);
     void setDelay(int delay);
 protected:
     virtual void _sort(ElementList& elems, bool desc) { }

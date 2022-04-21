@@ -11,10 +11,11 @@ void SortingAlgorithm::sort(ElementList& elems, bool desc)
     return;
 }
 
-void SortingAlgorithm::shuffle(ElementList& elems)
+void SortingAlgorithm::shuffle(ElementList& elems, int delay)
 {
     for(int i = elems.size()-1; i > 0; i--)
     {
+        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
         int randIndex = (i != 1) ? rand() % (i-1) : 0;
         Element::swap(elems[i], elems[randIndex]);
     }

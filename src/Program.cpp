@@ -38,10 +38,7 @@ Program::Program()
     sortingAlgorithm = cv::algorithmList[currentAlgorithm];
     sortingAlgorithm->setDelay(delay); 
 
-    for(int i = 0; i < listNumber; i++)
-    {
-        sortingAlgorithm->shuffle(elemLists[i]);
-    }
+    shuffleLists(0);
 }
 
 void Program::checkThreadProgress()
@@ -57,10 +54,30 @@ void Program::checkThreadProgress()
     }
 }
 
-void Program::initializer(std::promise<void>&& promise, int i, bool desc)
+void Program::sortInitializer(std::promise<void>&& promise, int i, bool desc)
 {
     sortingAlgorithm->sort(elemLists[i], desc);
     promise.set_value();
+}
+
+void Program::shuffleInitializer(std::promise<void>&& promise, int i, int delay)
+{
+    sortingAlgorithm->shuffle(elemLists[i], delay);
+    promise.set_value();
+}
+
+void Program::shuffleLists(int delay)
+{
+    for(int i = 0; i < listNumber; i++)
+    {
+        std::promise<void> promise;
+        std::future<void> future = promise.get_future();
+        std::thread thread(&Program::shuffleInitializer, this, std::move(promise), i, delay);
+
+        threadPool.push_back(std::move(thread));
+        futures.push_back(std::move(future));
+    }
+    shuffled = true;
 }
 
 void Program::handleEvents()
@@ -96,18 +113,14 @@ void Program::update()
 
             if(!shuffled)
             {
-                for(int i = 0; i < listNumber; i++)
-                {
-                    sortingAlgorithm->shuffle(elemLists[i]);
-                }
-                shuffled = true;
+                shuffleLists(0);
             }
 
             for(int i = 0; i < listNumber; i++)
             {
                 std::promise<void> promise;
                 std::future<void> future = promise.get_future();
-                std::thread thread(&Program::initializer, this, std::move(promise), i, pattern->isDescending(i));
+                std::thread thread(&Program::sortInitializer, this, std::move(promise), i, pattern->isDescending(i));
 
                 threadPool.push_back(std::move(thread));
                 futures.push_back(std::move(future));
@@ -118,11 +131,7 @@ void Program::update()
         ImGui::SameLine(0.f, 10.f);
         if(ImGui::Button("Shuffle", {60, 20}) && threadPool.empty())
         {
-            shuffled = true;
-            for(int i = 0; i < listNumber; i++)
-            {
-                sortingAlgorithm->shuffle(elemLists[i]);
-            }
+            shuffleLists(delay);
         }
         ImGui::SameLine(0.f, 10.f);
         ImGui::Checkbox("Descending", &descending);
@@ -188,10 +197,7 @@ void Program::performActions()
             pattern->setElementNo(elementNo);
             pattern->initializeLists();
 
-            for(int i = 0; i < listNumber; i++)
-            {
-                sortingAlgorithm->shuffle(elemLists[i]);
-            }
+            shuffleLists(0);
             break;
         case AlgorithmChange:
             sortingAlgorithm = cv::algorithmList[currentAlgorithm];
@@ -205,10 +211,7 @@ void Program::performActions()
             pattern->setDescending(descending);
             pattern->initializeLists();
 
-            for(int i = 0; i < listNumber; i++)
-            {
-                sortingAlgorithm->shuffle(elemLists[i]);
-            }   
+            shuffleLists(0);  
             break;
         }
     }
