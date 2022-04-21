@@ -46,6 +46,7 @@ private:
     void shuffleInitializer(std::promise<void>&& promise, int i, int delay);
     void checkThreadProgress();
 
+    void sortLists();
     void shuffleLists(int delay);
     void performActions();
 

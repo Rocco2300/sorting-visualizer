@@ -66,6 +66,19 @@ void Program::shuffleInitializer(std::promise<void>&& promise, int i, int delay)
     promise.set_value();
 }
 
+void Program::sortLists()
+{
+    for(int i = 0; i < listNumber; i++)
+    {
+        std::promise<void> promise;
+        std::future<void> future = promise.get_future();
+        std::thread thread(&Program::sortInitializer, this, std::move(promise), i, pattern->isDescending(i));
+
+        threadPool.push_back(std::move(thread));
+        futures.push_back(std::move(future));
+    }
+}
+
 void Program::shuffleLists(int delay)
 {
     for(int i = 0; i < listNumber; i++)
@@ -116,16 +129,7 @@ void Program::update()
                 shuffleLists(0);
             }
 
-            for(int i = 0; i < listNumber; i++)
-            {
-                std::promise<void> promise;
-                std::future<void> future = promise.get_future();
-                std::thread thread(&Program::sortInitializer, this, std::move(promise), i, pattern->isDescending(i));
-
-                threadPool.push_back(std::move(thread));
-                futures.push_back(std::move(future));
-            }
-            shuffled = false;
+            sortLists();
         }
 
         ImGui::SameLine(0.f, 10.f);
@@ -167,7 +171,10 @@ void Program::update()
 
         checkThreadProgress();        
         if(threadPool.empty())
+        {
+            shuffled = false;
             performActions();
+        }
     }
     ImGui::SFML::Shutdown();
 }
