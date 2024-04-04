@@ -116,7 +116,9 @@ void Program::update()
 
         ImGui::SFML::Update(window, dt);
 
-        ImGui::Begin("Hello, World!", NULL, ImGuiWindowFlags_NoTitleBar 
+        ImGui::SetNextWindowPos({0, 0});
+        ImGui::SetNextWindowSize({800, 75});
+        ImGui::Begin("Parameters", NULL, ImGuiWindowFlags_NoTitleBar 
                                             | ImGuiWindowFlags_NoMove
                                             | ImGuiWindowFlags_NoResize);
 
