@@ -15,16 +15,20 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system sfml-audio opengl32)
 target_compile_definitions(${PROJECT_NAME} PRIVATE "INSTALL_DIR=\"${CMAKE_SOURCE_DIR}\"")
 
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD 
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/sfml/lib/sfml-audio-2.dll ${CMAKE_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/sfml/lib/sfml-graphics-2.dll ${CMAKE_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/sfml/lib/sfml-network-2.dll ${CMAKE_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/sfml/lib/sfml-system-2.dll ${CMAKE_BINARY_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/sfml/lib/sfml-window-2.dll ${CMAKE_BINARY_DIR}
-)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(DLL_POSTFIX "-d")
+else()
+    set(DLL_POSTFIX "")
+endif()
 
-        
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/sfml/lib/sfml-audio${DLL_POSTFIX}-2.dll ${CMAKE_BINARY_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/sfml/lib/sfml-graphics${DLL_POSTFIX}-2.dll ${CMAKE_BINARY_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/sfml/lib/sfml-system${DLL_POSTFIX}-2.dll ${CMAKE_BINARY_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/sfml/lib/sfml-window${DLL_POSTFIX}-2.dll ${CMAKE_BINARY_DIR}
+)
+  
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD 
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/external/sfml/extlibs/bin/x64/openal32.dll ${CMAKE_BINARY_DIR}
